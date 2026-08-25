@@ -33,3 +33,33 @@ server {
     # allow <ton IP fixe>;
     # deny all;
 }
+
+# ---------------------------------------------------------------------------
+# adminapi.semply.fr — hôte d'API d'administration de SEmplyApp.
+#
+# Nécessaire parce que `admin-origin.ts` (SEmplyApp) compare le HOST de la
+# requête à ADMIN_ORIGIN : un appel du relais arrive côté serveur, sur l'hôte
+# d'API, jamais sur admin.semply.fr. Un second server_name vers le MÊME
+# processus NestJS suffit — il n'y a ni second déploiement ni seconde entrée
+# PM2. Poser ensuite ADMIN_ORIGIN=https://adminapi.semply.fr côté SEmplyApp.
+#
+# À placer sur le VPS qui héberge SEmplyApp, pas sur celui du back-office.
+# ---------------------------------------------------------------------------
+#
+# server {
+#     listen 443 ssl;
+#     server_name adminapi.semply.fr;
+#
+#     # Seul le relais appelle cet hôte : le restreindre à son IP ferme la
+#     # surface d'administration au reste d'internet, en amont de l'applicatif.
+#     allow <IP du VPS back-office>;
+#     deny all;
+#
+#     location / {
+#         proxy_pass http://127.0.0.1:<port SEmplyApp>;
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#     }
+# }
