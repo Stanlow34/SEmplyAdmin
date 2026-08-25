@@ -4,9 +4,20 @@ import { randomBytes, createHash } from 'node:crypto';
 /**
  * Client OIDC du back-office, côté serveur.
  *
- * Le back-office est un client CONFIDENTIEL : le secret vit ici, jamais dans le
- * navigateur. PKCE S256 est conservé malgré le secret — défense en profondeur,
- * et AuthSEmply l'exige (`requirePkce` par défaut sur les clients).
+ * Le back-office est déclaré en client PUBLIC avec PKCE S256 — comme les autres
+ * clients de la suite. AuthSEmply ne vérifie pas les secrets clients : la
+ * colonne `clientSecretHash` existe dans son schéma mais n'est lue nulle part.
+ * Envoyer un `client_secret` donnerait donc l'illusion d'une authentification
+ * de client qui n'a pas lieu.
+ *
+ * Ce que PKCE garantit ici : le code d'autorisation ne vaut rien sans le
+ * `code_verifier`, qui ne quitte jamais ce processus. Et `redirectUris` est
+ * une liste fermée côté portail, donc un tiers qui connaîtrait le
+ * `client_id` ne peut pas se faire livrer le code.
+ *
+ * `OIDC_CLIENT_SECRET` reste accepté, et transmis s'il est renseigné : le jour
+ * où AuthSEmply vérifiera les clients confidentiels, il n'y aura rien à
+ * changer ici.
  *
  * Les chemins sont configurables : AuthSEmply monte son contrôleur sur
  * `/oidc`, mais nginx peut préfixer. Ne jamais deviner en production.
@@ -102,7 +113,7 @@ export class OidcService {
       body: new URLSearchParams({
         ...body,
         client_id: this.clientId,
-        client_secret: this.clientSecret,
+        ...(this.clientSecret ? { client_secret: this.clientSecret } : {}),
       }),
     });
 
@@ -131,8 +142,9 @@ export class OidcService {
   private get clientId(): string {
     return required('OIDC_CLIENT_ID');
   }
-  private get clientSecret(): string {
-    return required('OIDC_CLIENT_SECRET');
+  /** Optionnel : AuthSEmply ne vérifie pas encore les clients confidentiels. */
+  private get clientSecret(): string | null {
+    return process.env.OIDC_CLIENT_SECRET?.trim() || null;
   }
   private get redirectUri(): string {
     return required('OIDC_REDIRECT_URI');
