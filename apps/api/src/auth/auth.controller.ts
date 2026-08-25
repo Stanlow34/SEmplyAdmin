@@ -1,9 +1,26 @@
-import { Controller, Get, Post, Req, Res, Query, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller, Get, Post, Req, Res, Query,
+  UnauthorizedException, ForbiddenException,
+} from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { OidcService } from './oidc.service';
 import { SessionStore } from '../session/session.store';
 import { ProductTokenService } from './product-token.service';
 import { SESSION_COOKIE, setSessionCookie, clearSessionCookie } from '../session/cookie';
+
+/**
+ * Méthodes d'authentification attendues d'un administrateur.
+ *
+ * L'AUTORITÉ est l'`AdminGuard` d'AuthSEmply, qui refuse toute session
+ * d'administration ouverte autrement que par mot de passe + TOTP. Le contrôle
+ * ci-dessous ne sécurise donc rien de plus : il sert à dire tout de suite, sur
+ * l'écran de connexion, ce qui manque — plutôt que de laisser découvrir la
+ * règle trois clics plus loin sous la forme d'un 403 sans contexte.
+ *
+ * Absent de `userinfo`, `amr` ne fait pas échouer la connexion : c'est au
+ * portail de trancher, pas à un miroir approximatif.
+ */
+const EXPECTED_AMR = ['pwd', 'otp'];
 
 /**
  * Entrée et sortie de session. Le navigateur ne voit jamais un jeton : il
@@ -32,6 +49,17 @@ export class AuthController {
 
     const tokens = await this.oidc.exchange(code, state);
     const profile = await this.oidc.userinfo(tokens.accessToken);
+
+    const amr = Array.isArray(profile.amr) ? profile.amr.map(String) : null;
+    if (amr) {
+      const missing = EXPECTED_AMR.filter((method) => !amr.includes(method));
+      if (missing.length > 0) {
+        throw new ForbiddenException(
+          'L’administration exige une connexion par mot de passe et code TOTP. ' +
+            'Reconnectez-vous au portail avec ces deux facteurs.',
+        );
+      }
+    }
 
     const id = this.sessions.create({
       sub: String(profile.sub ?? ''),
