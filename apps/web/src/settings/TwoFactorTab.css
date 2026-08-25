@@ -1,0 +1,162 @@
+/* Paramètres › Sécurité — double authentification */
+
+.tfa-panel {
+  max-width: 620px;
+  padding: 1.5rem 0;
+}
+
+.tfa-panel h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.tfa-panel h3 { margin: 1.25rem 0 0.5rem; font-size: 0.95rem; }
+
+.tfa-intro,
+.tfa-muted {
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tfa-warning {
+  border: 1px solid var(--color-warning, #f59e0b);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tfa-error { color: var(--color-danger, #d33); margin: 0.75rem 0; }
+.tfa-notice { color: var(--color-success, #16a34a); margin: 0.75rem 0; }
+
+/* ————— État ————— */
+.tfa-state { margin-top: 1.25rem; }
+
+.tfa-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+}
+
+.tfa-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tfa-status.on .tfa-dot { background: var(--color-success, #16a34a); }
+.tfa-status.off .tfa-dot { background: var(--text-color-light); }
+
+/* ————— Appairage ————— */
+.tfa-setup {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.tfa-qr {
+  width: 180px;
+  height: 180px;
+  display: block;
+  /* Fond blanc imposé : un QR sur fond sombre n'est pas lisible. */
+  background: var(--bg-color);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.tfa-secret {
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+
+.tfa-secret code {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+
+/* ————— Codes de secours ————— */
+.tfa-backup {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+}
+
+.tfa-backup p { font-size: 0.9rem; line-height: 1.5; }
+
+.tfa-backup-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.tfa-backup-list code {
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+/* ————— Formulaires & boutons ————— */
+.tfa-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tfa-form.column {
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 380px;
+}
+
+.tfa-form input {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+}
+
+.tfa-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.tfa-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.tfa-btn.primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tfa-btn.danger {
+  color: var(--color-danger, #d33);
+  border-color: var(--color-danger, #d33);
+}
+
+.tfa-btn:disabled { opacity: 0.5; cursor: not-allowed; }

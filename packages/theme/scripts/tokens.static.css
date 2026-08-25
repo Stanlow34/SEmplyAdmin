@@ -1,0 +1,85 @@
+  /* ── Typographie ────────────────────────────────────────── */
+  /* Inter pour le texte, Montserrat pour les titres. Les replis nommés
+     servent le temps que les fontes arrivent, et si elles n'arrivent pas. */
+  --font-family-text:         'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-family-title:        'Montserrat', Georgia, 'Times New Roman', serif;
+
+  /* ── Formes ─────────────────────────────────────────────── */
+  /* Trois rayons, pas davantage : le champ et la carte partagent le même
+     arrondi, le bouton est une pilule, la boîte modale est plus douce. Les
+     valeurs viennent des feuilles existantes des quatre produits, qui
+     s'accordaient déjà sans le dire. */
+  --radius:                   8px;
+  --radius-pill:              999px;
+  --radius-card:              16px;
+
+  /* Ombres exprimées sur du noir translucide et non sur une couleur de
+     palette : une ombre teintée devient un halo coloré en thème sombre. */
+  --shadow-card:              0 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-raised:            0 12px 32px rgba(15, 23, 42, 0.1);
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     ALIAS HISTORIQUES
+     ═══════════════════════════════════════════════════════════════════════
+
+     Ces noms étaient utilisés dans une quarantaine de feuilles de style de
+     SEmplyApp sans être définis NULLE PART. Chacun tombait donc sur sa valeur
+     de repli — `var(--card-bg, #fff)` rendait un blanc en dur, quel que soit
+     le thème. Ces zones de l'interface ignoraient purement et simplement la
+     palette : en thème sombre, elles restaient des rectangles blancs.
+
+     Les définir ici, en alias des vraies variables, corrige les ~460 valeurs
+     de repli d'un seul geste : elles restent dans le code mais ne s'appliquent
+     plus jamais, puisque la variable existe désormais.
+
+     Ce ne sont PAS de nouvelles couleurs. Chaque alias pointe vers la variable
+     de palette dont la valeur de repli trahissait déjà le rôle.
+
+     À ne pas étendre : un nom de plus ici est une chance de plus de désigner
+     la même chose de deux façons. Le bon réflexe reste d'utiliser directement
+     les jetons ci-dessus. */
+
+  /* Fonds et surfaces */
+  --card-bg:                  var(--bg-color);
+  --color-surface:            var(--bg-color);
+  --color-background:         var(--bg-color);
+  --color-bg-card:            var(--bg-color);
+  --color-bg-input:           var(--bg-color);
+  --input-bg:                 var(--bg-color);
+  --color-bg:                 var(--bg-color-light);
+  --bg-color-secondary:       var(--bg-color-light);
+  --color-bg-header:          var(--bg-color-light);
+  --color-bg-hover:           var(--bg-color-hover);
+  --hover-bg:                 var(--bg-color-hover);
+
+  /* Texte */
+  --color-text:               var(--text-color);
+  --color-text-primary:       var(--text-color);
+  --color-text-secondary:     var(--text-color-light);
+  --color-text-muted:         var(--text-color-light);
+  --color-text-soft:          var(--text-color-light);
+  --text-muted:               var(--text-color-light);
+
+  /* Bordures */
+  --border-color:             var(--color-border);
+
+  /* Couleur de marque. Alias du PRIMAIRE et non de sa version texte : ces
+     noms servent treize fois sur dix-huit à peindre un fond, une bordure ou
+     un anneau de focus. Les rares endroits qui les employaient comme couleur
+     de texte ont été repointés sur `--color-primary-text`. */
+  --primary-color:            var(--color-primary);
+  --accent:                   var(--color-primary);
+  --color-primary-bg:         var(--color-primary-transp);
+  --color-primary-ring:       var(--color-primary-transp);
+
+  /* Couleurs sémantiques : fond de badge et texte associé */
+  --color-success-bg:         var(--color-success-light);
+  --color-danger-bg:          var(--color-danger-light);
+  --color-danger-text:        var(--color-danger);
+  --color-warning-bg:         var(--color-warning-light);
+  --color-warning-border:     var(--color-warning);
+  --color-warning-text:       var(--color-warning);
+  /* Aucune palette ne définit de teinte « info » de fond. Plutôt que d'en
+     inventer une par thème, on retombe sur la surface neutre : elle porte du
+     texte lisible partout, ce qu'un bleu pâle inventé ne garantirait pas. */
+  --color-info-bg:            var(--bg-color-light);

@@ -1,0 +1,145 @@
+/*
+ * Base de la suite SEmply : typographie, liens, fonds, focus.
+ *
+ * Reprise à l'identique de SEmplyApp (frontend/src/styles/styles.css), qui
+ * est la référence de la charte. Ce fichier ne suppose aucun reset : il pose
+ * ce qui doit être vrai dans les quatre produits, et rien de plus.
+ *
+ * Dépend de tokens.css, à importer avant.
+ */
+
+/* ── Corps de page ──────────────────────────────────────────────────────── */
+
+body {
+    background-color: var(--bg-color);
+    background-position: center;
+    background-repeat: repeat;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    font-family: var(--font-family-text);
+}
+
+/* ── Titres ─────────────────────────────────────────────────────────────── */
+/* Montserrat pour les titres, Inter pour le texte. Les tailles sont en `em`
+   et non en `rem` : c'est le choix d'origine de SEmplyApp, où un titre placé
+   dans un bloc réduit doit suivre son contexte. */
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: var(--font-family-title);
+    color: var(--text-color);
+}
+h1 { font-size: 2em;   font-weight: 700; }
+h2 { font-size: 1.5em; font-weight: 700; }
+h3 { font-size: 1.2em; font-weight: 400; }
+h4 { font-size: 1em;   font-weight: 400; }
+h5 { font-size: 0.8em; font-weight: 300; }
+h6 { font-size: 0.5em; font-weight: 300; }
+
+.text {
+    font-family: var(--font-family-text);
+    color: var(--text-color);
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.montserrat {
+  font-family: var(--font-family-title);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.inter {
+  font-family: var(--font-family-text);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ── Liens ──────────────────────────────────────────────────────────────── */
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+a:hover {
+    color: var(--text-color-hover);
+}
+li {
+    list-style: none;
+}
+
+/* ── Dégradés de bandeau ────────────────────────────────────────────────── */
+/* La bannière et le pied de page de la suite. Deux sens, pour que l'en-tête
+   et le pied se répondent. */
+
+.gradient {
+    background: linear-gradient(to left, var(--color-secondary-light) 30%, var(--bg-color) 95%);
+}
+.gradient-reverse {
+    background: linear-gradient(to right, var(--color-secondary-light) 30%, var(--bg-color) 95%);
+}
+
+/* ── Focus clavier ──────────────────────────────────────────────────────── */
+/*
+ * Contour de focus par défaut.
+ *
+ * Le vrai manque n'est pas les `outline:none` — la plupart remplacent le
+ * contour par une bordure ou une ombre. Ce sont tous les éléments focusables
+ * qui n'ont AUCUN style de focus et se contentent du contour natif du
+ * navigateur : fin, gris, souvent invisible sur les fonds colorés de la
+ * charte.
+ *
+ * `:focus-visible` et non `:focus` : le contour n'apparaît qu'à la navigation
+ * clavier, jamais au clic souris.
+ *
+ * `:where(...)` met la règle à spécificité ZÉRO : les styles de focus déjà
+ * écrits dans les applications la remplacent sans avoir à les toucher, et de
+ * façon déterministe — pas selon l'ordre de chargement des feuilles.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex], [role="button"], [role="combobox"]):focus-visible {
+    outline: 3px solid var(--color-info);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/*
+ * Lien d'évitement — masqué jusqu'au focus clavier.
+ *
+ * `position: absolute` + décalage hors écran plutôt que `display: none` ou
+ * `visibility: hidden` : ces deux-là retirent l'élément de l'ordre de
+ * tabulation, ce qui viderait le lien de son intérêt.
+ */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 8px;
+    z-index: 10000;
+    padding: 10px 16px;
+    background: var(--color-primary-dark);
+    color: var(--color-on-primary);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 6px 6px;
+    transition: top 0.15s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* La cible du lien reçoit le focus par programme : pas de contour dessus, ce
+   serait un grand cadre autour de toute la page. */
+main:focus {
+    outline: none;
+}
+
+/* ── Impression ─────────────────────────────────────────────────────────── */
+
+@media print {
+    .header, footer {
+        display: none;
+    }
+    h1, h2, h3, h4, h5, h6, p, article {
+        color: var(--text-color-light);
+    }
+}

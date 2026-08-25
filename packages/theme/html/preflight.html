@@ -1,0 +1,62 @@
+    <!-- Thème appliqué AVANT le premier rendu.
+         ─────────────────────────────────────────────────────────────────
+         Le front applique la palette au montage de React, ce qui est trop
+         tard : entre l'affichage de la page et l'exécution du bundle, le
+         navigateur peint les valeurs claires de la feuille de style. Un
+         utilisateur en thème sombre voyait donc un éclair blanc à chaque
+         chargement — d'autant plus visible que le mode automatique est le
+         défaut.
+
+         Ce script est volontairement en ligne, minimal et sans dépendance :
+         il doit s'exécuter avant la première peinture, donc avant que le
+         bundle ne soit téléchargé. Il ne fait que poser les trois variables
+         qui décident du fond, plus `color-scheme` pour les éléments dessinés
+         par le navigateur (barres de défilement, champs de formulaire).
+
+         La palette complète est appliquée un instant plus tard par le front,
+         qui reste la seule source de vérité : ces quelques valeurs ne servent
+         qu'à éviter le flash.
+
+         Copie conforme de @semply/theme/html/preflight.html — les quatre
+         produits de la suite embarquent le MÊME script. Le format de stockage
+         est celui du paquet (cf. src/storage.js) ; les deux clés relues
+         couvrent SEmplyApp, qui écrivait déjà sous `app-theme`.
+
+         Enveloppé dans un try : un stockage local inaccessible (navigation
+         privée verrouillée, cookies bloqués) ne doit pas empêcher la page de
+         s'afficher. -->
+    <script>
+      (function () {
+        // Une palette sombre a une clé qui se TERMINE par « sombre » :
+        // `sombre` pour la suite, `adminSombre` pour le back-office. Ce
+        // script ne peut pas importer la charte — il s'exécute avant le
+        // bundle — donc la convention de nommage lui en tient lieu, et un
+        // test du paquet la vérifie sur toutes les palettes.
+        var sombre = function (k) { return /sombre$/i.test(k || ''); };
+        try {
+          var mode = 'auto', palette = null;
+          var keys = ['semply-theme', 'app-theme'];
+          for (var i = 0; i < keys.length; i++) {
+            var raw = window.localStorage.getItem(keys[i]);
+            if (!raw) continue;
+            var parsed = JSON.parse(raw);
+            var s = parsed.state || parsed || {};
+            palette = s.paletteKey || null;
+            // Cache écrit avant l'existence du mode : un choix explicite de la
+            // palette sombre reste un choix (cf. src/mode.js).
+            mode = s.mode || (sombre(palette) ? 'manual' : 'auto');
+            break;
+          }
+          var dark = mode === 'auto'
+            ? window.matchMedia('(prefers-color-scheme: dark)').matches
+            : sombre(palette);
+          if (dark) {
+            var r = document.documentElement;
+            r.style.setProperty('--bg-color', '#14171C');
+            r.style.setProperty('--bg-color-light', '#1C2027');
+            r.style.setProperty('--text-color', '#E7EAEE');
+            r.style.colorScheme = 'dark';
+          }
+        } catch (e) { /* thème par défaut : rien à faire */ }
+      })();
+    </script>

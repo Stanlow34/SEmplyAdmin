@@ -1,0 +1,453 @@
+/* Back-office › Procédures de déclaration.
+   Variables `--color-*` comme les autres pages d'administration (l'app cliente
+   utilise `--card-bg`/`--border-color`). */
+
+.admin-proc {
+  max-width: 1400px;
+}
+
+.admin-proc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-proc-head h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.admin-proc-head p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Trois colonnes : la liste, la saisie, l'aperçu. L'aperçu est au même niveau
+   que le formulaire parce que la seule chose qu'on ne voit pas en lisant un
+   formulaire, c'est un libellé qui déborde. */
+.admin-proc-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(360px, 1fr) 420px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .admin-proc-layout {
+    grid-template-columns: 240px 1fr;
+  }
+
+  .admin-proc-preview {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-proc-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Messages ───────────────────────────────────────────────────────────── */
+
+.admin-proc-warn,
+.admin-proc-error,
+.admin-proc-notice {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.admin-proc-warn {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+}
+
+.admin-proc-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.admin-proc-notice {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.admin-proc-notice.readonly {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: var(--color-text-muted, #6b7280);
+}
+
+/* ── Liste ──────────────────────────────────────────────────────────────── */
+
+.admin-proc-list ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-proc-item {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--color-surface, #fff);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.admin-proc-item:hover {
+  border-color: var(--color-primary, #2563eb);
+}
+
+.admin-proc-item.active {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: inset 3px 0 0 var(--color-primary, #2563eb);
+}
+
+.admin-proc-item-label {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.admin-proc-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.admin-proc-item-host {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-proc-badge {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+.admin-proc-empty {
+  margin: 0;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* ── Formulaire ─────────────────────────────────────────────────────────── */
+
+.admin-proc-fieldset {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+}
+
+.admin-proc-fieldset:disabled {
+  opacity: 0.75;
+}
+
+.admin-proc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.admin-proc-row .admin-proc-narrow {
+  max-width: 120px;
+}
+
+@media (max-width: 640px) {
+  .admin-proc-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-proc-fieldset label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+
+.admin-proc-fieldset label > span:first-child {
+  font-weight: 600;
+}
+
+.admin-proc-fieldset input[type='text'],
+.admin-proc-fieldset input[type='number'],
+.admin-proc-fieldset textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  background: var(--color-bg, #fff);
+  font: inherit;
+  color: inherit;
+}
+
+.admin-proc-fieldset textarea {
+  resize: vertical;
+}
+
+.admin-proc-fieldset small {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.admin-proc-fieldset code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  font-size: 0.92em;
+}
+
+.admin-proc-check {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px !important;
+}
+
+.admin-proc-check small {
+  grid-column: 1 / -1;
+}
+
+/* ── Raccourcis de destination ──────────────────────────────────────────── */
+
+.admin-proc-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.admin-proc-chip {
+  padding: 3px 9px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  background: var(--color-surface, #fff);
+  font: inherit;
+  cursor: pointer;
+}
+
+.admin-proc-chip:hover {
+  border-color: var(--color-primary, #2563eb);
+  color: var(--color-primary, #2563eb);
+}
+
+/* Les destinations internes se distinguent des sites officiels : ce sont deux
+   choix éditoriaux différents, pas deux variantes du même. */
+.admin-proc-chip.app {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────── */
+
+.admin-proc-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-proc-spacer {
+  flex: 1;
+}
+
+.admin-proc-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  background: var(--color-surface, #fff);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.admin-proc-btn:hover:not(:disabled) {
+  border-color: var(--color-primary, #2563eb);
+}
+
+.admin-proc-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.admin-proc-btn.primary {
+  background: var(--color-primary, #2563eb);
+  border-color: var(--color-primary, #2563eb);
+  color: #fff;
+}
+
+.admin-proc-btn.danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: var(--bg-color);
+}
+
+/* ── Aperçu ─────────────────────────────────────────────────────────────── */
+
+.admin-proc-preview h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.admin-proc-preview-second {
+  margin-top: 28px !important;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.admin-proc-preview-hint {
+  margin: 0 0 12px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.8rem;
+}
+
+/* ── Clics ──────────────────────────────────────────────────────────────── */
+
+.admin-proc-windows {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.admin-proc-chip.on {
+  border-color: var(--color-primary, #2563eb);
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.admin-proc-stats {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-proc-stats li {
+  display: grid;
+  grid-template-columns: 1fr 90px auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.admin-proc-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-proc-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.admin-proc-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-primary, #2563eb);
+}
+
+.admin-proc-stat-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.admin-proc-sources {
+  margin: 0 0 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* 380 px : la largeur RÉELLE de la popup. Ne pas l'assouplir — c'est la seule
+   raison d'être de cet aperçu. */
+.admin-proc-popup {
+  width: 380px;
+  max-width: 100%;
+  padding: 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.admin-proc-popup-title {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.admin-proc-popup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.admin-proc-popup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 8px 6px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: var(--bg-color);
+  text-align: center;
+}
+
+/* La procédure en cours d'édition est repérée dans la rangée : sans ça, on ne
+   sait pas lequel des trois boutons on est en train de modifier. */
+.admin-proc-popup-btn.current {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.admin-proc-popup-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1e293b;
+  overflow-wrap: anywhere;
+}

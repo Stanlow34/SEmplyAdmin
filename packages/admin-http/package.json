@@ -1,0 +1,10 @@
+{
+  "name": "@semplyadmin/http",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Couche HTTP du back-office — même surface que @semply/http, mais routée vers le relais.",
+  "main": "./src/index.js",
+  "exports": { ".": "./src/index.js" },
+  "peerDependencies": { "react": ">=18" }
+}

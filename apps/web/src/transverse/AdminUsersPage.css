@@ -1,0 +1,37 @@
+/* Utilisateurs de l'administration — collaborateurs et rôles. */
+
+.admin-users .au-intro { color: var(--admin-muted, #667); margin-top: -6px; }
+.au-error { color: #b3261e; }
+.au-notice { color: #1b7f4d; }
+
+.au-section { margin: 26px 0; }
+.au-section h2 { margin-bottom: 10px; }
+
+.au-table { width: 100%; border-collapse: collapse; }
+.au-table th, .au-table td {
+  text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--admin-border, #dcdfe6);
+}
+.au-table th { font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; opacity: .7; }
+.au-ok { color: #1b7f4d; }
+.au-warn { color: #b3611e; }
+.au-danger { color: #b3261e; background: none; border: 1px solid currentColor; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+
+.au-promote { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.au-promote input[type="email"] { flex: 1 1 280px; padding: 8px 10px; }
+.au-hint { font-size: .88rem; opacity: .75; margin-top: 6px; }
+
+.au-roles { list-style: none; padding: 0; display: grid; gap: 10px; }
+.au-role { border: 1px solid var(--admin-border, #dcdfe6); border-radius: 8px; padding: 10px 14px; }
+.au-role-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.au-badge { font-size: .75rem; border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; opacity: .7; }
+.au-count { font-size: .82rem; opacity: .65; }
+.au-role-actions { margin-left: auto; display: flex; gap: 8px; }
+.au-role-menus { margin: 6px 0 0; font-size: .9rem; opacity: .85; }
+
+.au-role-form { border: 1px solid var(--admin-border, #dcdfe6); border-radius: 8px; padding: 14px; margin-top: 12px; }
+.au-role-form input[type="text"] { width: 100%; max-width: 420px; padding: 8px 10px; margin: 8px 0 12px; }
+.au-menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px 14px; }
+.au-menu-check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.au-form-actions { display: flex; gap: 8px; margin-top: 14px; }
+.au-new-role { margin-top: 10px; }

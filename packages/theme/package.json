@@ -1,0 +1,53 @@
+{
+  "name": "@semply/theme",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Charte graphique de la suite SEmply : jetons de couleur, palettes (dont mode sombre et daltonien), typographie et conventions de composants, partagés par SEmplyApp, AuthSEmply, SEmplyCompta et SEmplyPrevi.",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./css": "./css/index.css",
+    "./css/tokens.css": "./css/tokens.css",
+    "./css/base.css": "./css/base.css",
+    "./css/components.css": "./css/components.css",
+    "./css/index.css": "./css/index.css",
+    "./html/preflight.html": "./html/preflight.html",
+    "./html/fonts.html": "./html/fonts.html",
+    "./react": {
+      "types": "./src/react.d.ts",
+      "default": "./src/react.js"
+    },
+    "./ThemeSwitch": {
+      "types": "./src/ThemeSwitch.d.ts",
+      "default": "./src/ThemeSwitch.jsx"
+    },
+    "./css/tailwind-bridge.css": "./css/tailwind-bridge.css",
+    "./css/tables-bare.css": "./css/tables-bare.css"
+  },
+  "files": [
+    "src",
+    "css",
+    "html"
+  ],
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs",
+    "check": "node scripts/build-tokens.mjs --check",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
+}

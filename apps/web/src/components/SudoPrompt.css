@@ -1,0 +1,94 @@
+.sudo-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.sudo-modal {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+.sudo-modal h2 { margin: 0 0 0.5rem; font-size: 1.15rem; }
+
+.sudo-modal p {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-color-light);
+}
+
+.sudo-modal label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0.85rem 0 0.25rem;
+}
+
+.sudo-modal input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+}
+
+.sudo-error {
+  color: var(--color-danger, #d33) !important;
+  margin: 0.75rem 0 0 !important;
+  font-size: 0.85rem !important;
+}
+
+.sudo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.sudo-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.sudo-btn.primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.sudo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Comptes Google : pas de champ mot de passe, mais un aller-retour Google. */
+.sudo-reauth-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.sudo-reauth-ok {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-success, #16a34a);
+}

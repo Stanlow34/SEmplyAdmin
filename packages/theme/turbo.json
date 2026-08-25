@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    // css/tokens.css est GÉNÉRÉ par scripts/build-tokens.mjs. Sans cette
+    // déclaration, la tâche hérite des outputs de la racine (dist/**) : Turbo
+    // ne met alors jamais le fichier en cache, sur un « cache hit » il rejoue
+    // les logs sans réécrire le fichier, et un tokens.css effacé ne revient
+    // pas. Le déclarer ici le fait restaurer avec le cache.
+    "build": {
+      "outputs": ["css/tokens.css"]
+    }
+  }
+}

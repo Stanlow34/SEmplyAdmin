@@ -1,0 +1,292 @@
+/* Page super admin — catalogue commercial (formules & fonctionnalités) */
+
+.ap-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.ap-muted { color: var(--text-color-light); }
+.ap-muted.small { font-size: 0.85rem; }
+
+/* ————— Onglets ————— */
+.ap-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin: 1.25rem 0 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ap-tabs button {
+  padding: 0.55rem 1rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-color-light);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.ap-tabs button.active {
+  color: var(--text-color);
+  font-weight: 600;
+  border-bottom-color: var(--color-primary);
+}
+
+/* ————— Mise en page ————— */
+.ap-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.ap-layout .ap-list.wide { max-width: none; }
+
+@media (max-width: 900px) {
+  .ap-layout { grid-template-columns: 1fr; }
+}
+
+/* ————— Liste latérale ————— */
+.ap-list section { margin-top: 1.25rem; }
+
+.ap-list h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-color-light);
+  margin: 0 0 0.5rem;
+}
+
+.ap-plan-item,
+.ap-feature-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 0.5rem;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ap-plan-item.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.ap-plan-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ap-plan-meta {
+  font-size: 0.78rem;
+  color: var(--text-color-light);
+}
+
+.ap-plan-meta code { font-size: 0.75rem; }
+
+.ap-feature-item {
+  display: flex;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.ap-feature-item .ap-feature-edit { flex: 1; }
+
+.ap-icon-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--bg-color);
+  color: var(--color-danger, #d33);
+  padding: 0 0.7rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.ap-badge {
+  font-style: normal;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.ap-badge.muted {
+  background: var(--color-border);
+  color: var(--text-color-light);
+}
+
+/* ————— Formulaire ————— */
+.ap-form {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  background: var(--bg-color);
+}
+
+.ap-form h2 { margin-top: 0; font-size: 1.1rem; }
+
+.ap-form label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0.85rem 0 0.25rem;
+}
+
+.ap-form input:not([type='checkbox']),
+.ap-form select,
+.ap-form textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+}
+
+.ap-form input:disabled { opacity: 0.6; }
+
+.ap-row { display: flex; gap: 0.75rem; }
+.ap-row > div { flex: 1; }
+
+.ap-inline-check { display: flex; align-items: flex-end; padding-bottom: 0.5rem; }
+
+.ap-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.ap-check {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 !important;
+  font-weight: 500 !important;
+}
+
+.ap-check input[type='checkbox'] { width: auto; }
+
+.ap-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #667);
+  margin: 0.35rem 0 0.5rem;
+  line-height: 1.4;
+}
+
+/* ————— Matrice des droits ————— */
+.ap-section {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 1rem;
+}
+
+.ap-feature-group { margin-bottom: 1rem; }
+
+.ap-feature-group h4 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-color-light);
+  margin: 0.85rem 0 0.4rem;
+}
+
+.ap-feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+}
+
+.ap-feature-row.disabled { opacity: 0.55; }
+
+.ap-feature-row .ap-check span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.ap-feature-row code {
+  font-size: 0.74rem;
+  color: var(--text-color-light);
+}
+
+.ap-limit {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.ap-limit input { width: 6.5rem !important; text-align: right; }
+.ap-limit small { font-size: 0.7rem; color: var(--text-color-light); }
+
+/* ————— Boutons ————— */
+.ap-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.ap-btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.ap-btn.block { width: 100%; }
+
+.ap-btn.primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.ap-btn.danger {
+  color: var(--color-danger, #d33);
+  border-color: var(--color-danger, #d33);
+}
+
+.ap-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ap-error { color: var(--color-danger, #d33); margin-top: 0.75rem; }
+.ap-notice { color: var(--color-success); margin-top: 0.75rem; }
+
+/* Profil de consultation : bandeau d'explication là où les boutons ont disparu,
+   pour que leur absence ne passe pas pour une panne. */
+.ap-readonly {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-warning);
+  border-radius: 8px;
+  color: #b45309;
+  font-size: 0.85rem;
+}

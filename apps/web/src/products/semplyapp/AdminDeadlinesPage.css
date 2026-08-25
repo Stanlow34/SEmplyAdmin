@@ -1,0 +1,121 @@
+/* Back-office super admin — échéances (calendrier officiel + guides d'étapes) */
+
+.adl-page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+.adl-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; }
+.adl-header h1 { margin: 0 0 .35rem; }
+.adl-intro { margin: 0; max-width: 62ch; color: var(--text-color-light); font-size: .9rem; line-height: 1.5; }
+
+.adl-badge {
+  flex-shrink: 0; padding: .25rem .6rem; border: 1px solid var(--color-border);
+  border-radius: 999px; font-size: .75rem; color: var(--text-color-light);
+}
+
+.adl-readonly, .adl-error, .adl-notice {
+  margin: 1rem 0 0; padding: .6rem .85rem; border-radius: 8px; font-size: .88rem;
+}
+.adl-readonly { background: var(--color-tertiary); }
+.adl-error { background: #fee2e2; color: #991b1b; }
+.adl-notice { background: #dcfce7; color: #166534; }
+
+.adl-muted { color: var(--text-color-light); }
+.adl-hint { font-size: .8rem; margin: .2rem 0 .8rem; }
+
+/* ── Onglets ─────────────────────────────────────────────────────────── */
+.adl-tabs { display: flex; gap: .4rem; margin: 1.5rem 0 1rem; border-bottom: 1px solid var(--color-border); }
+.adl-tabs button {
+  padding: .55rem 1rem; border: none; border-bottom: 2px solid transparent;
+  background: none; color: var(--text-color-light); font: inherit; font-size: .9rem; cursor: pointer;
+}
+.adl-tabs button.active { color: var(--text-color); font-weight: 600; border-bottom-color: var(--color-primary); }
+
+/* ── Contrôle d'exhaustivité de l'année ──────────────────────────────── */
+.adl-missing {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: .85rem 1rem; margin-bottom: 1.25rem;
+  border: 1px solid var(--color-border); border-radius: 10px;
+}
+.adl-missing label { display: grid; gap: 3px; font-size: .8rem; }
+.adl-missing input { width: 110px; padding: .4rem .55rem; border: 1px solid var(--color-border); border-radius: 6px; font: inherit; }
+.adl-missing-ok { margin: 0; font-size: .85rem; color: #166534; }
+.adl-missing-ko { margin: 0; font-size: .85rem; color: #92400e; }
+
+/* ── Formulaire de saisie d'une date ─────────────────────────────────── */
+.adl-form {
+  display: grid; grid-template-columns: 120px 1fr 160px; gap: .75rem 1rem;
+  align-items: end; padding: 1rem; margin-bottom: 1.25rem;
+  border: 1px solid var(--color-border); border-radius: 10px;
+}
+@media (max-width: 760px) { .adl-form { grid-template-columns: 1fr; } }
+.adl-form label { display: grid; gap: 4px; font-size: .8rem; }
+.adl-form-wide { grid-column: 1 / -1; }
+.adl-form input, .adl-form select {
+  padding: .45rem .6rem; border: 1px solid var(--color-border); border-radius: 6px; font: inherit;
+}
+.adl-form button {
+  grid-column: 1 / -1; justify-self: start;
+  padding: .5rem 1.1rem; border: 1px solid var(--color-primary); border-radius: 6px;
+  background: var(--color-primary); color: #fff; font: inherit; cursor: pointer;
+}
+
+/* ── Tableau ─────────────────────────────────────────────────────────── */
+.adl-table { width: 100%; border-collapse: collapse; }
+.adl-table th, .adl-table td {
+  padding: .5rem .6rem; border-bottom: 1px solid var(--color-border);
+  text-align: left; font-size: .88rem;
+}
+
+.adl-link { border: none; background: none; padding: 0; font: inherit; font-size: .85rem; color: var(--color-primary); cursor: pointer; }
+.adl-link-danger { color: var(--color-danger-dark); }
+
+/* ── Guides ──────────────────────────────────────────────────────────── */
+.adl-guides { display: grid; gap: 1rem; }
+.adl-guide-card { padding: 1rem; border: 1px solid var(--color-border); border-radius: 10px; }
+.adl-guide-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.adl-guide-card p { margin: .4rem 0 .6rem; font-size: .85rem; }
+.adl-steps-preview { margin: 0; padding-left: 1.2rem; font-size: .85rem; color: var(--text-color-light); }
+.adl-steps-preview li + li { margin-top: 2px; }
+
+.adl-tag {
+  margin-left: .5rem; padding: .1rem .45rem; border-radius: 999px;
+  background: #fef3c7; color: #92400e; font-size: .7rem;
+}
+
+/* ── Modale d'édition ────────────────────────────────────────────────── */
+.adl-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: flex;
+  align-items: center; justify-content: center; padding: 1.5rem;
+  background: rgba(0, 0, 0, .45);
+}
+.adl-modal {
+  position: relative; width: min(680px, 100%); max-height: 85vh; overflow-y: auto;
+  padding: 1.5rem; border-radius: 12px; background: var(--color-background, #fff);
+}
+.adl-modal h2 { margin: 0 0 1rem; }
+.adl-modal h3 { margin: 1.5rem 0 .2rem; font-size: .95rem; }
+.adl-modal-close { position: absolute; top: .75rem; right: .75rem; border: none; background: none; font-size: 1rem; cursor: pointer; }
+
+.adl-field { display: grid; gap: 4px; margin-bottom: .85rem; font-size: .8rem; }
+.adl-field input, .adl-field textarea {
+  padding: .45rem .6rem; border: 1px solid var(--color-border); border-radius: 6px; font: inherit;
+}
+.adl-toggle { display: flex; align-items: center; gap: .5rem; font-size: .85rem; cursor: pointer; }
+
+.adl-step-edit { padding: .6rem; margin-bottom: .6rem; border: 1px solid var(--color-border); border-radius: 8px; }
+.adl-step-head { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; }
+.adl-step-head input { flex: 1; padding: .4rem .55rem; border: 1px solid var(--color-border); border-radius: 6px; font: inherit; }
+.adl-step-head button { width: 28px; border: 1px solid var(--color-border); border-radius: 6px; background: none; cursor: pointer; }
+.adl-step-num {
+  flex-shrink: 0; width: 22px; height: 22px; display: grid; place-items: center;
+  border-radius: 999px; background: var(--color-tertiary); font-size: .75rem;
+}
+.adl-step-edit textarea { width: 100%; padding: .4rem .55rem; border: 1px solid var(--color-border); border-radius: 6px; font: inherit; }
+
+.adl-add-step {
+  width: 100%; padding: .5rem; border: 1px dashed var(--color-border);
+  border-radius: 8px; background: none; font: inherit; cursor: pointer;
+}
+
+.adl-modal-actions { display: flex; gap: .6rem; margin-top: 1.25rem; }
+.adl-modal-actions button { padding: .5rem 1.1rem; border: 1px solid var(--color-border); border-radius: 6px; background: none; font: inherit; cursor: pointer; }
+.adl-primary { border-color: var(--color-primary) !important; background: var(--color-primary) !important; color: #fff; }

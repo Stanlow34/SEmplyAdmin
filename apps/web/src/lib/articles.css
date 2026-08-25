@@ -1,0 +1,334 @@
+/* Articles & conseils.
+   Mêmes variables de thème que la boîte à outils et l'accueil gratuit : la
+   page suit la palette choisie par l'utilisateur, sans couleur en dur. */
+
+/* ── Liste ──────────────────────────────────────────────────────────────── */
+
+.articles {
+  padding: 24px 28px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.articles-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.articles-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+}
+
+.articles-intro {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--text-muted, #64748b);
+  font-size: 0.875rem;
+}
+
+.articles-state {
+  padding: 32px 0;
+  color: var(--text-muted, #64748b);
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.articles-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 12px;
+  background: var(--card-bg, #fff);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.articles-card:hover,
+.articles-card:focus-visible {
+  border-color: var(--primary-color, #2563eb);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.articles-card-cat {
+  color: var(--text-muted, #64748b);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.articles-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.articles-card-summary {
+  color: var(--text-muted, #64748b);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.articles-card-meta {
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--text-muted, #64748b);
+  font-size: 0.75rem;
+}
+
+/* ── Détail ─────────────────────────────────────────────────────────────── */
+
+/* Largeur de lecture volontairement plus étroite que les écrans de gestion :
+   au-delà d'environ 75 caractères par ligne, l'œil perd le début de la
+   suivante. */
+.article {
+  padding: 24px 28px 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.article-back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--primary-color, #2563eb);
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+
+.article-back:hover {
+  text-decoration: underline;
+}
+
+.article-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+}
+
+.article-header h1 {
+  margin: 6px 0 8px;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.article-meta {
+  margin: 0;
+  color: var(--text-muted, #64748b);
+  font-size: 0.8125rem;
+}
+
+.article-body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.article-body h2 {
+  margin: 32px 0 10px;
+  font-size: 1.1875rem;
+  line-height: 1.3;
+}
+
+.article-body h3 {
+  margin: 24px 0 8px;
+  font-size: 1rem;
+}
+
+.article-body p {
+  margin: 0 0 14px;
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 16px;
+  padding-left: 22px;
+}
+
+.article-body li {
+  margin-bottom: 8px;
+}
+
+.article-body a {
+  color: var(--primary-color, #2563eb);
+}
+
+/* Chapeau : le premier paragraphe se distingue par sa POSITION, pas par une
+   classe — le corps vient d'un markdown restreint qui ne sait pas en poser. */
+.article-body > p:first-child {
+  font-size: 1.03125rem;
+  line-height: 1.6;
+}
+
+.article-body hr {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+/* Encadré des recommandations : le seul élément mis en avant de l'article, il
+   ne doit pas ressembler à une publicité — même carte que partout ailleurs,
+   avec un filet de couleur à gauche. */
+.article-callout {
+  margin: 16px 0 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-left: 3px solid var(--primary-color, #2563eb);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+}
+
+.article-callout h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.article-callout p:last-child {
+  margin-bottom: 0;
+}
+
+/* Blocs conditionnels : rien à styler pour le lecteur (il ne voit qu'une
+   branche, rendue comme le reste de l'article). Ces règles ne servent qu'à
+   l'aperçu de rédaction, où les deux branches sont montrées côte à côte. */
+.article-conditional {
+  margin: 16px 0;
+  padding: 12px 14px;
+  border: 1px dashed var(--border-color, #e2e8f0);
+  border-radius: 10px;
+}
+
+.article-conditional-label {
+  margin: 12px 0 6px !important;
+  color: var(--text-muted, #64748b);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.article-conditional-label:first-child {
+  margin-top: 0 !important;
+}
+
+.article-btn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--primary-color, #2563eb);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.article-btn:hover {
+  filter: brightness(1.06);
+}
+
+/* ── Tableaux ───────────────────────────────────────────────────────────────
+   Un comparatif d'offres est plus large que la colonne de lecture : il défile
+   dans son propre conteneur, jamais la page (cf. markdown.jsx). */
+
+.article-table-wrap {
+  margin: 16px 0 24px;
+  overflow-x: auto;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 10px;
+  background: var(--card-bg, #fff);
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84375rem;
+}
+
+.article-table th,
+.article-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-table th {
+  color: var(--text-muted, #64748b);
+  font-size: 0.71875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Première colonne = l'entrée du tableau (la plateforme) : on la garde d'un
+   seul tenant et en gras, c'est elle qu'on cherche du regard. */
+.article-table td:first-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.article-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .articles,
+  .article {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .article-header h1 {
+    font-size: 1.4375rem;
+  }
+}
+/* ── Illustrations ──────────────────────────────────────────────────────────
+   Une capture d'écran vaut trois paragraphes, mais elle ne doit ni déborder de
+   la colonne de lecture, ni faire sauter le texte pendant son chargement. Les
+   images sont servies par l'API (cf. markdown.jsx), en chargement différé. */
+
+.article-figure {
+  margin: 22px 0 26px;
+}
+
+.article-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 10px;
+}
+
+.article-figure figcaption {
+  margin-top: 8px;
+  color: var(--text-muted, #64748b);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Image au fil du texte : elle suit la ligne de base, sans cadre — c'est en
+   général un pictogramme ou une capture de bouton, pas une illustration. */
+.article-inline-image {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}

@@ -28,6 +28,47 @@ import { SESSION_COOKIE } from '../session/cookie';
  *     particulier `Cookie`, qui porte la session du back-office : la relayer
  *     l'exposerait à quatre API qui n'en ont pas l'usage.
  */
+/**
+ * Chemins que le relais accepte de transmettre.
+ *
+ * `admin/` est la surface d'administration proprement dite. S'y ajoutent
+ * quelques routes d'authentification, et elles ne sont PAS un assouplissement
+ * de confort : les écrans repris de SEmplyApp exigent une preuve d'identité
+ * fraîche avant les mutations sensibles (`SudoGuard`), et l'écran Sécurité doit
+ * pouvoir appairer un TOTP — sans quoi un compte habilité mais non appairé
+ * reste enfermé dehors, la double authentification étant obligatoire.
+ *
+ * La liste est ÉNUMÉRÉE, jamais un préfixe large comme `auth/` : `auth/login`
+ * ou `auth/refresh` relayés donneraient au navigateur prise sur la session que
+ * le relais est justement là pour lui soustraire.
+ *
+ * ⚠️ `auth/google/reauth` n'y est PAS et ne peut pas y être : c'est une
+ * navigation de premier niveau vers Google, dont le retour pose des cookies sur
+ * le domaine du produit. Un relais qui transmet des requêtes fetch ne sait pas
+ * conduire ça. Conséquence : la preuve d'identité « Confirmer avec Google »
+ * n'est pas disponible depuis ce back-office — seul le mot de passe l'est. Un
+ * compte sans mot de passe utilisable devra soit en poser un, soit attendre le
+ * déplacement de la preuve d'identité vers le portail, qui l'a déjà conduite
+ * une fois à la connexion.
+ */
+const RELAYABLE_EXACT = new Set([
+  'health/environment',
+  'auth/sudo',
+  'auth/reauth/status',
+  // Remontée des erreurs hors rendu du back-office lui-même.
+  'client-errors',
+]);
+const RELAYABLE_PREFIXES = ['admin/', 'auth/totp/'];
+
+function isRelayable(path: string): boolean {
+  // Une remontée de chemin viderait ces règles de leur sens.
+  if (path.includes('..')) return false;
+  const clean = path.split('?')[0];
+  return (
+    RELAYABLE_EXACT.has(clean) || RELAYABLE_PREFIXES.some((prefix) => clean.startsWith(prefix))
+  );
+}
+
 @Controller('p')
 export class ProxyController {
   private readonly logger = new Logger(ProxyController.name);
@@ -49,8 +90,8 @@ export class ProxyController {
     if (!session) throw new UnauthorizedException();
 
     const path = String((req.params as Record<string, unknown>).path ?? '');
-    if (!path.startsWith('admin/')) {
-      throw new BadRequestException('Seules les routes d’administration sont relayées');
+    if (!isRelayable(path)) {
+      throw new BadRequestException('Route non relayée');
     }
 
     // Renouvellement avant expiration : évite un 401 et un aller-retour.

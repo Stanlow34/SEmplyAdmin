@@ -1,0 +1,13 @@
+/* Entrée Tailwind v4 — volontairement SANS le preflight (reset global de
+   Tailwind), car l'app possède déjà son propre reset (reset.css) et un design
+   system CSS custom (styles.css). Importer le preflight ré-initialiserait tout
+   et casserait l'existant.
+
+   On n'active donc que le thème (variables) et les utilitaires. Grâce aux
+   cascade layers, le CSS existant (non "layered") garde la priorité sur les
+   utilitaires en cas de conflit : adoption incrémentale sans régression. */
+
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);

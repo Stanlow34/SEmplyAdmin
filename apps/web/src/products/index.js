@@ -1,14 +1,16 @@
+import * as semplyapp from './semplyapp/routes.jsx';
+
 /**
- * Modules de routes par produit — chargés à la demande (code splitting).
+ * Modules de routes par produit.
  *
- * Un module est DÉTACHABLE : retirer l'entrée ci-dessous et supprimer le
- * dossier suffit à sortir un produit du back-office, sans toucher au reste.
- * C'est ce qui rend l'arrêt d'un produit sans conséquence ici.
+ * La clé correspond à celle du produit dans la liste blanche du relais
+ * (`PRODUCTS`) : un produit absent du relais n'affiche pas ses écrans, même si
+ * son module existe. Retirer une entrée ici et supprimer son dossier suffit à
+ * sortir un produit du back-office.
  *
- * La clé correspond au `clientId` du produit dans le catalogue OIDC
- * d'AuthSEmply : un produit absent du catalogue n'affiche simplement pas ses
- * écrans, même si le module existe.
+ * Les descripteurs sont importés tout de suite — ils ne pèsent que des
+ * `lazy()` — mais les pages, elles, ne sont téléchargées qu'à l'ouverture.
  */
 export const PRODUCT_MODULES = {
-  semplyapp: () => import('./semplyapp/routes.jsx'),
+  semplyapp,
 };

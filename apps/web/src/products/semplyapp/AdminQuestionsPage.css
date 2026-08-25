@@ -1,0 +1,233 @@
+/* Page super admin — gestion des questions d'onboarding */
+
+.oa-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.oa-muted {
+  color: var(--text-color-light);
+}
+
+.oa-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .oa-layout { grid-template-columns: 1fr; }
+}
+
+/* Formulaire */
+.oa-form {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  background: var(--bg-color);
+}
+
+.oa-form label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0.85rem 0 0.25rem;
+}
+
+.oa-form input:not([type='checkbox']),
+.oa-form select,
+.oa-form textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+}
+
+.oa-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.oa-row > div { flex: 1; }
+
+.oa-checks {
+  margin-top: 1rem;
+  gap: 1.5rem;
+}
+
+.oa-checks label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.oa-details {
+  margin-top: 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+}
+
+.oa-details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+}
+
+.oa-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+/* Boutons */
+.oa-btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.oa-btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.oa-btn-danger {
+  color: var(--color-danger, #d33);
+  border-color: var(--color-danger, #d33);
+}
+
+.oa-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Liste */
+.oa-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  background: var(--bg-color);
+}
+
+.oa-card.inactive {
+  opacity: 0.55;
+}
+
+.oa-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.oa-card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.oa-error { color: var(--color-danger, #d33); margin-top: 0.75rem; }
+.oa-notice { color: var(--color-success); margin-top: 0.75rem; }
+
+/* ————— Aide options (plan comptable) ————— */
+.oa-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #667);
+  margin: 0.35rem 0 0.5rem;
+  line-height: 1.4;
+}
+
+/* ————— Panneau plans comptables ————— */
+.oa-plans {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  background: var(--bg-color);
+}
+
+.oa-plans-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.oa-plans-head h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.oa-plans-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+}
+
+.oa-plans-list code {
+  font-weight: 600;
+}
+
+/* Catalogue cœur (lecture seule) */
+.oa-core-block {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.5rem;
+  background: var(--bg-color);
+}
+.oa-core-summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.oa-core-step { margin-top: 1rem; }
+.oa-core-step h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-color-light);
+  margin: 0 0 0.4rem;
+}
+.oa-core-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.oa-core-list li {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.oa-core-list code { font-size: 0.78rem; }

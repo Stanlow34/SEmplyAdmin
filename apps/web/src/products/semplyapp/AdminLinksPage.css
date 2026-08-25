@@ -1,0 +1,389 @@
+/* Back-office › Annuaire de liens.
+   ──────────────────────────────────────────────────────────────────────────
+   Couleurs de données déclarées ici en dur, et non via les variables de thème
+   de l'application : celles-ci changent avec la palette choisie par le compte
+   (--color-primary va du vert pâle au bleu nuit selon le thème), ce qui ferait
+   varier une couleur qui PORTE UNE INFORMATION. Une couleur de série se valide
+   contre une surface donnée ; elle ne peut pas être un réglage.
+
+   Trois teintes catégorielles (site / extension / application), prises dans
+   l'ordre fixe d'une palette validée contre le fond blanc de cette page :
+   séparation daltonisme ΔE 9,2 au pire (seuil 8), vision normale 24,0
+   (plancher 15). L'aqua est à 2,82:1 de contraste, sous 3:1 : la contrepartie
+   obligatoire est appliquée — valeurs visibles dans la légende et tableau
+   complet en dessous, donc aucune information n'est portée par la seule teinte.
+
+   Pas de variante sombre : le back-office n'en a pas (--bg-color vaut #FFFFFF
+   dans tous les thèmes). Une barre sombre sur une page claire serait le défaut,
+   pas la fonctionnalité. */
+
+.admin-links {
+  --alk-site: #2a78d6; /* catégorielle 1 — bleu */
+  --alk-extension: #eb6834; /* catégorielle 2 — orange */
+  --alk-app: #1baf7a; /* catégorielle 3 — aqua */
+  /* Magnitude : une seule série, donc une seule teinte, avec sa piste dans un
+     pas clair du MÊME dégradé (l'état se lit sur toute la largeur). */
+  --alk-bar: #2a78d6;
+  --alk-track: #cde2fb;
+
+  --alk-ink: var(--text-color);
+  --alk-ink-soft: var(--text-color-light);
+  --alk-ink-muted: #898781;
+  --alk-hairline: var(--color-border);
+
+  max-width: 1180px;
+}
+
+.alk-head h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.alk-head p {
+  margin: 0 0 20px;
+  max-width: 74ch;
+  color: var(--alk-ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ── Filtre (une seule ligne, au-dessus de tout ce qu'elle cadre) ────────── */
+
+.alk-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.alk-chip {
+  padding: 6px 14px;
+  border: 1px solid var(--alk-hairline);
+  border-radius: 999px;
+  background: var(--bg-color);
+  color: var(--alk-ink-soft);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.alk-chip:hover {
+  border-color: var(--alk-ink-muted);
+}
+
+.alk-chip.active {
+  border-color: var(--alk-ink);
+  color: var(--alk-ink);
+  font-weight: 600;
+}
+
+.alk-since {
+  margin-left: 4px;
+  color: var(--alk-ink-muted);
+  font-size: 0.8rem;
+}
+
+/* Rechargement : on garde le rendu précédent en retrait, sans saut de page. */
+.alk-body {
+  transition: opacity 0.15s;
+}
+
+.alk-body.refreshing {
+  opacity: 0.55;
+}
+
+/* ── Tuiles ─────────────────────────────────────────────────────────────── */
+
+.alk-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.alk-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 18px;
+  border: 1px solid var(--alk-hairline);
+  border-radius: 12px;
+  background: var(--bg-color);
+}
+
+.alk-tile-label {
+  color: var(--alk-ink-soft);
+  font-size: 0.8rem;
+}
+
+/* Chiffres proportionnels (pas de tabular-nums) : à cette taille, des chasses
+   égales font paraître « 121 » distendu. */
+.alk-tile-value {
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--alk-ink);
+}
+
+.alk-tile-hint {
+  color: var(--alk-ink-muted);
+  font-size: 0.78rem;
+}
+
+/* ── Cartes ─────────────────────────────────────────────────────────────── */
+
+.alk-card {
+  margin-bottom: 16px;
+  padding: 18px;
+  border: 1px solid var(--alk-hairline);
+  border-radius: 12px;
+  background: var(--bg-color);
+}
+
+.alk-card h2 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+}
+
+.alk-sub {
+  margin: 0 0 12px;
+  max-width: 70ch;
+  color: var(--alk-ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.alk-empty {
+  margin: 8px 0 0;
+  max-width: 74ch;
+  color: var(--alk-ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* ── Barre empilée par source ───────────────────────────────────────────── */
+
+.alk-stack {
+  display: flex;
+  gap: 2px; /* le fond fait la séparation : jamais de contour sur un segment */
+  height: 14px;
+  margin: 14px 0 12px;
+}
+
+.alk-seg {
+  min-width: 3px;
+}
+
+/* Extrémités arrondies aux seules extrémités de la pile, carrées à l'intérieur. */
+.alk-seg:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.alk-seg:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.alk-seg:only-child {
+  border-radius: 4px;
+}
+
+.src-site {
+  background: var(--alk-site);
+}
+
+.src-extension {
+  background: var(--alk-extension);
+}
+
+.src-app {
+  background: var(--alk-app);
+}
+
+.alk-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alk-legend li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+/* Le repère coloré porte l'identité ; le texte reste en encre. */
+.alk-key {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.alk-legend-label {
+  color: var(--alk-ink-soft);
+}
+
+.alk-legend-value {
+  color: var(--alk-ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Tableau (aussi la vue de repli : toutes les valeurs y sont lisibles) ── */
+
+.alk-table-wrap {
+  overflow-x: auto;
+}
+
+.alk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.alk-table th {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--alk-hairline);
+  color: var(--alk-ink-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.alk-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--alk-hairline);
+  vertical-align: top;
+}
+
+.alk-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.alk-table a {
+  color: var(--alk-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.alk-table a:hover {
+  text-decoration: underline;
+}
+
+/* Colonnes de chiffres : là, les chasses égales servent l'alignement. */
+.alk-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.alk-strong {
+  font-weight: 600;
+}
+
+.alk-cat {
+  color: var(--alk-ink-soft);
+  font-size: 0.8rem;
+}
+
+.alk-muted {
+  color: var(--alk-ink-muted);
+  font-weight: 400;
+}
+
+.alk-badge {
+  margin-left: 8px;
+  padding: 1px 6px;
+  border: 1px solid var(--alk-hairline);
+  border-radius: 999px;
+  color: var(--alk-ink-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* La barre occupe toute la largeur de sa cellule : la colonne « Lien » est la
+   plus large du tableau, une piste bornée y laissait un vide et raccourcissait
+   inutilement l'échelle de comparaison. */
+.alk-bar {
+  display: block;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 3px;
+  background: var(--alk-track);
+}
+
+/* Extrémité arrondie côté valeur, carrée sur la ligne de base (à gauche). */
+.alk-bar-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 0 4px 4px 0;
+  background: var(--alk-bar);
+}
+
+/* ── Liste discrète (liens sans clic) ───────────────────────────────────── */
+
+.alk-quiet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Une ligne par lien, jamais deux : les colonnes de cette grille sont
+   indépendantes, une catégorie qui passe à la ligne décalerait les filets d'une
+   colonne à l'autre. C'est le libellé qui cède (ellipse + infobulle), pas la
+   hauteur de ligne. */
+.alk-quiet li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--alk-hairline);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.alk-quiet .alk-cat {
+  flex: 0 0 auto;
+}
+
+.alk-quiet a {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--alk-ink);
+  text-decoration: none;
+  text-overflow: ellipsis;
+}
+
+.alk-quiet a:hover {
+  text-decoration: underline;
+}
+
+.alk-error {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-danger-dark);
+  border-radius: 8px;
+  color: var(--color-danger-dark);
+  font-size: 0.875rem;
+}
+
+.alk-warn {
+  max-width: 68ch;
+  color: var(--alk-ink-soft);
+  font-size: 0.925rem;
+  line-height: 1.55;
+}

@@ -1,0 +1,123 @@
+/* Coquille du back-office super admin (domaine dédié) */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--bg-color);
+  flex-wrap: wrap;
+}
+
+.admin-brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Repère visuel fort : on n'est pas dans l'application cliente. */
+.admin-brand span {
+  font-weight: 500;
+  color: #fff;
+  background: var(--color-danger, #d33);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+
+/* Profil d'administration en cours. Neutre quand il ne restreint rien, marqué
+   quand il restreint : la couleur ne porte pas seule l'information, le libellé
+   est explicite. */
+.admin-profile {
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--text-color-light);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.admin-profile.limited {
+  border-color: var(--color-warning);
+  color: #b45309;
+}
+
+.admin-nav {
+  display: flex;
+  gap: 0.35rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.admin-nav a {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  color: var(--text-color-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.admin-nav a:hover { background: var(--color-border); }
+
+.admin-nav a.active {
+  color: var(--text-color);
+  font-weight: 600;
+  background: var(--color-border);
+}
+
+.admin-session {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+}
+
+.admin-session button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-main { padding: 0 1.5rem; }
+
+.admin-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.admin-loading {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--text-color-light);
+}
+
+/* Écrans de refus de la coquille (compte non habilité, aucun rôle). */
+.admin-refused { max-width: 520px; margin: 12vh auto; text-align: center; padding: 0 20px; }
+.admin-refused h1 { margin-bottom: 8px; }
+.admin-refused button { margin-top: 16px; }
+
+/* Encart « Mon identité » de l'écran Sécurité. */
+.admin-identity {
+  border: 1px solid var(--admin-border, #dcdfe6);
+  border-radius: 8px; padding: 16px; margin: 16px 0 24px; max-width: 640px;
+}
+.admin-identity-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.admin-identity-fields label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
+.admin-identity-fields input { padding: 8px 10px; }
+.admin-identity-hint { font-size: .88rem; opacity: .75; margin: 10px 0; }
+.admin-identity-actions { display: flex; align-items: center; gap: 12px; }
+.admin-identity-ok { color: #1b7f4d; }

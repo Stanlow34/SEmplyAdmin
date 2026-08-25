@@ -1,0 +1,120 @@
+/* Back-office › Session support */
+
+.asup-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+.asup-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+  color: var(--color-text, #111827);
+}
+
+.asup-sub {
+  margin: 0 0 28px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.asup-page h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  color: var(--color-text, #111827);
+}
+
+/* ————— Rappel des règles ————— */
+.asup-rules {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-left: 3px solid var(--color-danger-dark);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.asup-rules ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.asup-rules strong { color: var(--color-text, #111827); }
+
+/* ————— Formulaires ————— */
+.asup-form,
+.asup-opened {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.asup-form form {
+  display: grid;
+  gap: 8px;
+  max-width: 340px;
+}
+
+.asup-form label {
+  font-size: 0.825rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.asup-form input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: transparent;
+  color: inherit;
+}
+
+.asup-code-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.asup-form button {
+  justify-self: start;
+  margin-top: 4px;
+  padding: 0.55rem 1.1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.asup-form button:disabled { opacity: 0.6; cursor: default; }
+
+.asup-hint {
+  margin: 0 0 12px;
+  font-size: 0.825rem;
+  line-height: 1.5;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.asup-opened p { margin: 0 0 10px; font-size: 0.9rem; line-height: 1.5; }
+.asup-opened .asup-hint { margin-bottom: 0; }
+
+.asup-alert {
+  border: 1px solid var(--color-danger-dark);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 20px;
+  color: var(--color-danger-dark);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}

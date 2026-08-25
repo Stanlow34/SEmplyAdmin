@@ -1,0 +1,376 @@
+/* Back-office › Articles de conseil.
+   Variables `--color-*` comme les autres pages d'administration (l'app cliente
+   utilise `--card-bg`/`--border-color`). */
+
+.admin-articles {
+  max-width: 1400px;
+}
+
+.admin-articles-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-articles-head h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.admin-articles-head p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Trois colonnes : la liste, la saisie, l'aperçu. L'aperçu est au même niveau
+   que le formulaire — pas dans un onglet séparé — parce qu'un rédacteur juge
+   son texte en le voyant, pas en cliquant. */
+.admin-articles-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(360px, 1fr) minmax(340px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .admin-articles-layout {
+    grid-template-columns: 240px 1fr;
+  }
+
+  .admin-articles-preview {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-articles-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Liste ──────────────────────────────────────────────────────────────── */
+
+.admin-articles-list ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-articles-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-articles-item:hover {
+  border-color: var(--color-primary, #2563eb);
+}
+
+.admin-articles-item.active {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: inset 3px 0 0 var(--color-primary, #2563eb);
+}
+
+.admin-articles-item-title {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.admin-articles-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+}
+
+.admin-articles-badge {
+  padding: 1px 7px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.admin-articles-badge.on {
+  border-color: #15803d;
+  color: #15803d;
+}
+
+.admin-articles-empty {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.875rem;
+}
+
+/* ── Formulaire ─────────────────────────────────────────────────────────── */
+
+.admin-articles-form {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--color-surface, #fff);
+}
+
+/* Le fieldset ne sert qu'à neutraliser la saisie d'un profil de consultation :
+   il ne doit rien changer à la mise en page. */
+.admin-articles-fieldset {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.admin-articles-fieldset:disabled {
+  opacity: 0.7;
+}
+
+.admin-articles-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.admin-articles-row .admin-articles-narrow {
+  max-width: 120px;
+}
+
+.admin-articles-form label {
+  display: block;
+}
+
+.admin-articles-form label > span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.admin-articles-form input[type='text'],
+.admin-articles-form input[type='number'],
+.admin-articles-form textarea {
+  width: 100%;
+  /* Le reset du projet (Meyer 2.0) ne pose pas `border-box` : sans cette ligne,
+     `width: 100%` + padding + bordure débordent de la carte. */
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-color, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.admin-articles-form small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+}
+
+/* Le corps est du markdown : une chasse fixe rend les tableaux lisibles à la
+   saisie, ce qu'une police proportionnelle interdit. */
+.admin-articles-body {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 0.82rem !important;
+  line-height: 1.55;
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.admin-articles-help summary {
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-articles-help dl {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0;
+}
+
+.admin-articles-help dl > div {
+  display: flex;
+  gap: 10px;
+  font-size: 0.78rem;
+}
+
+.admin-articles-help dt {
+  flex: 0 0 165px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--color-text, #111827);
+}
+
+.admin-articles-help dd {
+  margin: 0;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.admin-articles-help p {
+  margin: 0;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.admin-articles-check {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.admin-articles-check input {
+  margin-right: 6px;
+}
+
+.admin-articles-check small {
+  font-weight: 400;
+}
+
+.admin-articles-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-articles-spacer {
+  flex: 1;
+}
+
+.admin-articles-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-color, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-articles-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.admin-articles-btn.primary {
+  border-color: transparent;
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+}
+
+.admin-articles-btn.danger {
+  border-color: var(--color-danger-dark);
+  color: var(--color-danger-dark);
+}
+
+/* Le libellé du corps porte le bouton de dépôt : l'action est là où on la
+   cherche, au-dessus du champ qu'elle modifie. */
+.admin-articles-bodyhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-articles-bodyhead .admin-articles-btn {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+}
+
+.admin-articles-bodyfield > small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ── Aperçu ─────────────────────────────────────────────────────────────── */
+
+.admin-articles-preview > h2 {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #6b7280);
+}
+
+/* L'aperçu réutilise les styles de l'application (`.article`), qui centre et
+   borne la largeur de lecture : ici il doit remplir sa colonne. */
+.admin-articles-preview .article {
+  max-width: none;
+  padding: 18px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--color-surface, #fff);
+}
+
+.admin-articles-preview .article-header {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+}
+
+.admin-articles-preview .article-header h1 {
+  font-size: 1.4rem;
+}
+
+.admin-articles-error,
+.admin-articles-notice {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.admin-articles-error {
+  border: 1px solid var(--color-danger-dark);
+  color: var(--color-danger-dark);
+}
+
+.admin-articles-notice {
+  border: 1px solid #15803d;
+  color: #15803d;
+}
+
+/* Information de contexte, pas une réussite : couleur d'avertissement sobre. */
+.admin-articles-notice.readonly {
+  border-color: var(--color-warning);
+  color: #b45309;
+}
+
+.admin-articles-warn {
+  max-width: 68ch;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.925rem;
+  line-height: 1.55;
+}

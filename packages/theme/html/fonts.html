@@ -1,0 +1,21 @@
+    <!-- Polices de la suite : Inter (texte) et Montserrat (titres).
+         Les deux sont demandées en fontes VARIABLES sur toute la plage de
+         graisses (100..900) et dans les deux styles. Charger un sous-ensemble
+         de graisses fixes, comme le faisait SEmplyCompta, coûte le même
+         nombre de requêtes et rend un rendu différent partout où la charte
+         demande une graisse absente du sous-ensemble.
+
+         `preconnect` vers les deux domaines : la feuille vient de
+         fonts.googleapis.com mais les fichiers de police, eux, viennent de
+         fonts.gstatic.com. Sans la seconde ligne, la poignée de main TLS avec
+         gstatic n'est engagée qu'après la lecture de la feuille.
+
+         À poser dans <head>, JAMAIS en `@import` depuis un fichier CSS : un
+         `@import` est découvert après le téléchargement de la feuille qui le
+         contient, ce qui retarde d'autant l'affichage du texte. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />

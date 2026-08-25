@@ -1,0 +1,16 @@
+/*
+ * Point d'entrée de la charte SEmply.
+ *
+ *   import '@semply/theme/css';
+ *
+ * L'ordre compte : les jetons d'abord (ils sont référencés par tout le
+ * reste), la base ensuite, les composants enfin.
+ *
+ * Les polices ne sont PAS importées ici. Un `@import` de fonts.googleapis.com
+ * depuis une feuille de style n'est découvert qu'après le téléchargement de
+ * cette feuille, ce qui retarde l'affichage du texte d'un aller-retour
+ * complet. Elles se déclarent dans le <head> : copier html/fonts.html.
+ */
+@import './tokens.css';
+@import './base.css';
+@import './components.css';

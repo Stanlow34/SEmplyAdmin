@@ -1,0 +1,42 @@
+/*
+ * Tableaux SANS classe, à l'aspect de `.table_first`.
+ *
+ * Optionnel, à importer après la charte. SEmplyCompta et SEmplyPrevi affichent
+ * l'essentiel de leurs écrans en `<table>` bruts — balance, grand livre,
+ * journaux, prévisionnels — sans jamais poser de classe. Plutôt que de laisser
+ * ces tableaux au rendu par défaut du navigateur (ou de recopier le bloc dans
+ * les deux dépôts, ce qui était le cas), ce fichier applique à l'élément ce
+ * que components.css applique à `.table_first`.
+ *
+ * SEmplyApp ne l'importe pas : ses tableaux portent la classe, et styler
+ * l'élément y toucherait aussi les tableaux de mise en page.
+ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid var(--color-secondary-transp);
+}
+
+table th {
+  background-color: var(--color-primary-light);
+  color: var(--text-color);
+  font-family: var(--font-family-title);
+  font-weight: 700;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: var(--color-secondary-transp);
+}
+
+table tbody tr:hover {
+  background-color: var(--color-tertiary-transp);
+}

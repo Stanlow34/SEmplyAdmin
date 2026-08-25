@@ -1,0 +1,281 @@
+/* Page super admin — composition des profils (droits par fonctionnalité) */
+
+.admin-profiles {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.admin-profiles-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.admin-profiles-header h1 {
+  margin: 0 0 0.35rem;
+}
+
+.admin-profiles-intro {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.admin-profiles-badge {
+  flex-shrink: 0;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--text-color-light);
+}
+
+.admin-profiles-readonly,
+.admin-profiles-error,
+.admin-profiles-notice {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+
+.admin-profiles-readonly { background: var(--color-tertiary); }
+.admin-profiles-error { background: #fee2e2; color: #991b1b; }
+.admin-profiles-notice { background: #dcfce7; color: #166534; }
+
+/* ————— Mise en page ————— */
+.admin-profiles-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .admin-profiles-layout { grid-template-columns: 1fr; }
+}
+
+/* ————— Liste des profils ————— */
+.admin-profiles-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.admin-profiles-list button {
+  width: 100%;
+  display: grid;
+  gap: 2px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-profiles-list button:hover { background: var(--color-tertiary); }
+
+.admin-profiles-list button.active {
+  border-color: var(--color-primary);
+  background: var(--color-tertiary);
+}
+
+.admin-profiles-name { font-weight: 600; }
+
+.admin-profiles-meta {
+  font-size: 0.78rem;
+  color: var(--text-color-light);
+}
+
+.admin-profiles-add {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.55rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.admin-profiles-create {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.admin-profiles-create label {
+  display: grid;
+  gap: 3px;
+  font-size: 0.8rem;
+}
+
+.admin-profiles-create input,
+.admin-profiles-create select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.admin-profiles-create-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-profiles-create-actions button {
+  flex: 1;
+  padding: 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ————— Grille des droits ————— */
+.admin-profiles-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-profiles-title h2 { margin: 0 0 0.2rem; }
+
+.admin-profiles-title p {
+  margin: 0;
+  color: var(--text-color-light);
+  font-size: 0.88rem;
+}
+
+.admin-profiles-delete {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-danger-dark);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-profiles-group {
+  margin-bottom: 1.75rem;
+}
+
+.admin-profiles-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-profiles-group-head h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Raccourcis par bloc : sur une grille de trente lignes, régler un menu entier
+   d'un geste évite l'erreur d'attention qui laisse une case au mauvais niveau. */
+.admin-profiles-bulk {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.admin-profiles-bulk button {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--text-color-light);
+  cursor: pointer;
+}
+
+.admin-profiles-grid table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-profiles-grid th,
+.admin-profiles-grid td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.admin-profiles-grid th:not(:first-child),
+.admin-profiles-radio {
+  width: 96px;
+  text-align: center;
+}
+
+.admin-profiles-grid td:first-child {
+  display: grid;
+  gap: 1px;
+}
+
+.admin-profiles-feature { font-weight: 500; }
+
+.admin-profiles-feature-desc {
+  font-size: 0.78rem;
+  color: var(--text-color-light);
+}
+
+.admin-profiles-grid code {
+  font-size: 0.72rem;
+  color: var(--text-color-light);
+}
+
+.admin-profiles-empty {
+  padding: 1rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  color: var(--text-color-light);
+}
+
+/* Barre d'enregistrement collante : la grille est longue, le bouton doit rester
+   sous la main sans qu'on remonte chercher où l'on en était. */
+.admin-profiles-save {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 0;
+  background: var(--color-background, #fff);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+}
+
+.admin-profiles-save button {
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.admin-profiles-save button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

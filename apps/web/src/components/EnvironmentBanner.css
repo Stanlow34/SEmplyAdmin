@@ -1,0 +1,52 @@
+/* Bandeau d'environnement du back-office.
+
+   Pleine largeur, en haut, non masquable : c'est un repère de sécurité, pas
+   une notification. La couleur ne porte jamais l'information seule — le
+   libellé (« PRODUCTION », « APPV2 ») et l'hôte de la base sont écrits en
+   toutes lettres, lisibles sans distinguer le rouge de l'ambre. */
+
+.env-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.4rem 1.5rem;
+  font-size: 0.8rem;
+  color: #fff;
+  /* Ambre : la recette. Assez marqué pour se voir, assez sobre pour ne pas
+     hurler sur l'environnement où l'on passe le plus de temps. */
+  background: #b45309;
+}
+
+.env-banner--prod {
+  background: var(--color-danger-dark, #b91c1c);
+}
+
+.env-banner__label {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.env-banner__text {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.env-banner__db {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 0.22);
+  white-space: nowrap;
+  /* Peut être long (hôte Neon) : on tronque plutôt que de casser la ligne. */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media print {
+  .env-banner { display: none; }
+}

@@ -1,0 +1,292 @@
+/* Back-office › Tickets de support */
+
+.atk-page { max-width: 1240px; margin: 0 auto; padding: 32px 20px 48px; }
+
+.atk-header h1 { margin: 0 0 6px; font-size: 1.5rem; color: var(--color-text, #111827); }
+.atk-sub {
+  margin: 0 0 20px; max-width: 70ch;
+  color: var(--color-text-muted, #6b7280); font-size: .95rem; line-height: 1.5;
+}
+
+/* ————— Filtres ————— */
+.atk-filters {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.atk-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.atk-chips button {
+  padding: .35rem .8rem; font-size: .825rem; cursor: pointer;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 999px;
+  background: var(--color-surface, #fff); color: inherit;
+}
+.atk-chips button.active {
+  background: var(--color-primary, #2563eb); border-color: var(--color-primary, #2563eb);
+  color: #fff;
+}
+.atk-search {
+  min-width: 260px; padding: .5rem .7rem; font-size: .9rem;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 6px;
+  background: transparent; color: inherit;
+}
+
+.atk-alert {
+  border: 1px solid var(--color-danger-dark); border-radius: 8px; padding: .7rem .9rem;
+  margin-bottom: 16px; color: var(--color-danger-dark); font-size: .875rem; line-height: 1.45;
+}
+
+/* ————— Deux colonnes : la file à gauche, le fil à droite ————— */
+.atk-layout {
+  display: grid; grid-template-columns: minmax(300px, 400px) 1fr;
+  gap: 20px; align-items: start;
+}
+@media (max-width: 1000px) { .atk-layout { grid-template-columns: 1fr; } }
+
+.atk-list, .atk-detail {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px; padding: 12px;
+}
+.atk-detail { padding: 18px; }
+
+.atk-empty { margin: 12px 4px; color: var(--color-text-muted, #6b7280); font-size: .875rem; }
+
+.atk-list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.atk-row {
+  width: 100%; display: grid; gap: 4px; text-align: left; cursor: pointer;
+  padding: .6rem .7rem; border: 1px solid transparent; border-radius: 8px;
+  background: transparent; color: inherit; font: inherit;
+}
+.atk-row:hover { background: var(--color-surface-2, #f9fafb); }
+.atk-row.active {
+  background: var(--color-surface-2, #f3f4f6);
+  border-color: var(--color-border, #e5e7eb);
+}
+.atk-row__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+/* Titre interne au-dessus, en gras : c'est la clé de classement, donc ce que
+   l'œil suit en balayant la file. Le titre client passe en dessous, en retrait,
+   pour rester reconnaissable quand le demandeur appelle. */
+.atk-row__internal {
+  font-size: .9rem; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.atk-row__subject { font-size: .9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.atk-row__internal + .atk-row__subject {
+  font-size: .82rem; color: var(--color-text-muted, #6b7280);
+}
+.atk-row__meta { font-size: .775rem; color: var(--color-text-muted, #6b7280); }
+/* Deux signaux qui changent la façon de traiter : une priorité posée à la main,
+   et un demandeur sans compte (donc sans historique à consulter). */
+.atk-high { color: var(--color-danger-dark); font-weight: 600; }
+.atk-anon { font-style: italic; }
+
+.atk-ref {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .78rem; letter-spacing: .02em;
+}
+
+/* ————— Statuts ————— */
+.atk-badge {
+  display: inline-block; padding: .15rem .5rem; border-radius: 999px;
+  font-size: .72rem; font-weight: 600; white-space: nowrap;
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+.atk-badge--ouvert            { background: #eef2ff; border-color: #c7d2fe; color: #3730a3; }
+.atk-badge--en_cours          { background: #e0f2fe; border-color: #bae6fd; color: #075985; }
+.atk-badge--en_attente_client { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
+.atk-badge--resolu            { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+.atk-badge--clos              { background: transparent; color: var(--color-text-muted, #6b7280); }
+
+/* ————— Fil ————— */
+.atk-detail__head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 16px;
+}
+.atk-detail__head h2 { margin: 0 0 4px; font-size: 1.1rem; }
+
+/* Les deux titres sont des CHAMPS, pas un titre suivi d'un formulaire : ils se
+   corrigent en place. Le libellé de chacun dit son public — se tromper de champ
+   n'a pas les mêmes suites. */
+.atk-titles { display: grid; gap: 8px; flex: 1; }
+.atk-title-field { display: grid; gap: 2px; }
+.atk-title-field > span { font-size: .72rem; color: var(--color-text-muted, #6b7280); }
+.atk-title-field input {
+  width: 100%; padding: .35rem .5rem; font: inherit; font-size: 1.05rem; font-weight: 600;
+  border: 1px solid transparent; border-radius: 6px;
+  background: transparent; color: inherit;
+}
+.atk-title-field input:hover:not(:disabled),
+.atk-title-field input:focus {
+  border-color: var(--color-border, #e5e7eb);
+  background: var(--color-surface, #fff);
+}
+/* Le titre client est en retrait : il se modifie, mais ce n'est pas le geste
+   courant, et il porte les mots de quelqu'un d'autre. */
+.atk-title-field--client input { font-size: .92rem; font-weight: 400; }
+.atk-detail__meta { margin: 0; font-size: .8rem; color: var(--color-text-muted, #6b7280); }
+
+.atk-thread { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.atk-message {
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 10px; padding: .7rem .85rem;
+}
+.atk-message header {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: .78rem; color: var(--color-text-muted, #6b7280); margin-bottom: .35rem;
+}
+.atk-message header time { margin-left: auto; }
+.atk-message p { margin: 0; white-space: pre-wrap; font-size: .9rem; line-height: 1.55; }
+.atk-message--agent { background: var(--color-surface-2, #f9fafb); }
+
+/* Une note interne doit être IMPOSSIBLE à confondre avec une réponse : bordure
+   pleine, fond ambré, et la mention écrite en toutes lettres. C'est la seule
+   protection contre le fait d'en rédiger une dans la mauvaise zone. */
+.atk-message--internal {
+  background: #fffbeb; border-color: #fcd34d; border-left-width: 4px;
+}
+.atk-internal-tag {
+  padding: .1rem .45rem; border-radius: 4px;
+  background: #fef3c7; color: #92400e; font-size: .7rem; font-weight: 600;
+}
+
+.atk-files { list-style: none; margin: .5rem 0 0; padding: 0; font-size: .78rem; color: var(--color-text-muted, #6b7280); }
+
+/* ————— Réponse ————— */
+.atk-reply { margin-top: 18px; display: grid; gap: 6px; }
+.atk-reply label { font-size: .825rem; color: var(--color-text-muted, #6b7280); }
+.atk-reply textarea {
+  width: 100%; padding: .6rem .7rem; font: inherit; font-size: .9rem;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 8px;
+  background: transparent; color: inherit;
+}
+/* Le mode « note interne » teinte la zone entière, pas seulement la case :
+   au moment d'écrire, c'est le champ qu'on regarde, pas la case cochée. */
+.atk-reply--internal textarea { background: #fffbeb; border-color: #fcd34d; }
+
+.atk-reply__actions {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.atk-checks { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.atk-check { display: flex; align-items: center; gap: 6px; font-size: .825rem; cursor: pointer; }
+/* Neutralisée et non masquée quand « note interne » est cochée : une case grisée
+   dit pourquoi aucun email ne partira, une case disparue laisse la question. */
+.atk-check:has(input:disabled) { color: var(--color-text-muted, #6b7280); cursor: default; }
+
+/* Le retour d'envoi n'est pas décoratif : c'est le SEUL endroit où l'on
+   apprend qu'un email n'est pas parti. L'envoi étant best-effort côté serveur,
+   l'échec ne lève rien — sans cette ligne, il serait parfaitement silencieux. */
+.atk-sent, .atk-not-sent {
+  margin: .5rem 0 0; padding: .5rem .7rem; border-radius: 8px;
+  font-size: .8rem; line-height: 1.5;
+}
+.atk-sent { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+.atk-not-sent { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.atk-reply button {
+  padding: .5rem 1.1rem; border: 0; border-radius: 6px;
+  background: var(--color-primary, #2563eb); color: #fff;
+  font-size: .875rem; font-weight: 600; cursor: pointer;
+}
+.atk-reply button:disabled { opacity: .6; cursor: default; }
+
+.atk-hint { margin: 0; font-size: .78rem; line-height: 1.5; color: var(--color-text-muted, #6b7280); }
+
+.atk-readonly {
+  margin: 18px 0 0; padding: .6rem .8rem; border-radius: 8px;
+  border: 1px dashed var(--color-border, #e5e7eb);
+  color: var(--color-text-muted, #6b7280); font-size: .825rem;
+}
+
+/* ————— Statut & priorité ————— */
+.atk-actions {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--color-border, #e5e7eb);
+}
+.atk-actions label { font-size: .825rem; color: var(--color-text-muted, #6b7280); }
+.atk-actions select {
+  padding: .4rem .6rem; font-size: .875rem; color: inherit; background: transparent;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 6px;
+}
+.atk-actions .atk-hint { flex-basis: 100%; }
+
+/* Action secondaire : elle a un effet destructif discret (l'ancien lien meurt),
+   donc pas d'aplat primaire qui inviterait à cliquer sans y penser. */
+.atk-secondary {
+  padding: .4rem .8rem; font-size: .825rem; cursor: pointer;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 6px;
+  background: transparent; color: inherit;
+}
+.atk-secondary:hover:not(:disabled) { background: var(--color-surface-2, #f9fafb); }
+.atk-secondary:disabled { opacity: .6; cursor: default; }
+
+.atk-actions .atk-sent, .atk-actions .atk-not-sent { flex-basis: 100%; margin-top: 0; }
+
+/* ————— Réglages —————
+   Repliés par défaut : ils se touchent quelques fois par an, la file tous les
+   jours. Dépliés d'office, ils repousseraient le travail réel sous la ligne de
+   flottaison. */
+.atk-settings { margin-top: 24px; }
+.atk-settings__toggle {
+  padding: .4rem 0; font: inherit; font-size: .875rem; font-weight: 600;
+  background: none; border: 0; cursor: pointer; color: inherit;
+}
+.atk-settings__body {
+  margin-top: 8px; padding: 18px;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 12px;
+}
+.atk-settings__body h3 { margin: 16px 0 4px; font-size: .9rem; }
+.atk-settings__body h3:first-of-type { margin-top: 0; }
+.atk-settings__grid {
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; margin: 10px 0;
+}
+.atk-settings__grid label { display: grid; gap: 3px; font-size: .825rem; }
+.atk-settings__grid label > span { color: var(--color-text-muted, #6b7280); }
+.atk-settings__grid input, .atk-settings__grid select {
+  padding: .4rem .6rem; font: inherit; font-size: .875rem;
+  border: 1px solid var(--color-border, #e5e7eb); border-radius: 6px;
+  background: transparent; color: inherit;
+}
+.atk-settings__grid input[type='number'] { width: 90px; }
+.atk-settings__grid label.atk-check { display: flex; align-items: center; }
+
+/* Aperçu : on juge un format de référence en le VOYANT, pas en lisant quatre
+   champs séparés. */
+.atk-preview {
+  margin: 4px 0 0; padding: .5rem .7rem; border-radius: 8px;
+  background: var(--color-surface-2, #f9fafb); font-size: .85rem;
+}
+.atk-settings__body > button {
+  margin-top: 16px; padding: .5rem 1.1rem; border: 0; border-radius: 6px;
+  background: var(--color-primary, #2563eb); color: #fff;
+  font-size: .875rem; font-weight: 600; cursor: pointer;
+}
+.atk-settings__body > button:disabled { opacity: .6; cursor: default; }
+
+/* Affectation des tickets aux collaborateurs. */
+.atk-assigned { padding: 6px 10px; border-radius: 6px; }
+.atk-assignee { font-weight: 600; }
+.atk-detail__side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.atk-assign { display: flex; flex-direction: column; gap: 2px; font-size: .82rem; }
+.atk-assign select { padding: 4px 8px; border-radius: 6px; }
+
+/* Vues enregistrées et macros. */
+.atk-views { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 14px; }
+.atk-view-chip { display: inline-flex; align-items: center; border: 1px solid var(--admin-border, #dcdfe6); border-radius: 999px; overflow: hidden; }
+.atk-view-chip > button:first-child { border: 0; background: none; padding: 5px 10px; cursor: pointer; }
+.atk-view-del { border: 0; background: none; padding: 5px 8px; cursor: pointer; opacity: .6; }
+.atk-view-del:hover { opacity: 1; }
+.atk-view-save { border: 1px dashed var(--admin-border, #dcdfe6); background: none; border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.atk-triage-tag { opacity: .8; }
+
+.atk-reply__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.atk-macro-select { max-width: 240px; padding: 4px 8px; border-radius: 6px; }
+.atk-macro-status { margin-top: 6px; }
+.atk-link { border: 0; background: none; text-decoration: underline; cursor: pointer; padding: 0; font: inherit; }
+
+.atk-macros { border: 1px solid var(--admin-border, #dcdfe6); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+.atk-macro-list { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 10px; }
+.atk-macro-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.atk-macro-scope { font-size: .78rem; border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; opacity: .65; }
+.atk-macro-actions { margin-left: auto; display: flex; gap: 6px; }
+.atk-macro-body { margin: 4px 0 0; font-size: .9rem; opacity: .85; white-space: pre-wrap; }
+.atk-macro-form input[type="text"], .atk-macro-form textarea { width: 100%; padding: 8px 10px; margin: 6px 0; box-sizing: border-box; }
+.atk-macro-form__row { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.atk-macro-form__row label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; }

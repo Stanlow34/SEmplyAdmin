@@ -1,0 +1,261 @@
+/* Back-office › Ouverture de la plateforme.
+   ──────────────────────────────────────────────────────────────────────────
+   Deux réglages seulement, et des conséquences irréversibles à l'échelle d'une
+   journée d'exploitation (plus personne ne s'inscrit, plus personne n'achète).
+   La mise en forme sert donc une seule chose : que l'état COURANT se lise sans
+   effort, et que la conséquence de chaque choix soit écrite à côté du choix.
+
+   D'où les cartes plutôt qu'une liste d'interrupteurs alignés, et le texte
+   explicatif en `em` sous chaque libellé : c'est la partie utile, pas de
+   l'habillage.
+
+   Couleurs en dur comme sur les autres pages d'administration : le back-office
+   n'a pas de thème (fond blanc dans toutes les palettes). */
+
+.admin-platform {
+  --apf-ink: var(--text-color);
+  --apf-ink-soft: var(--text-color-light);
+  --apf-hairline: var(--color-border);
+  --apf-accent: #2a78d6;
+  --apf-danger: var(--color-danger-dark);
+  --apf-ok: #15803d;
+
+  max-width: 900px;
+  color: var(--apf-ink);
+}
+
+.admin-platform h1 {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+}
+
+.admin-platform h2 {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+}
+
+/* ── Messages ─────────────────────────────────────────────────────────────── */
+
+.admin-platform-error,
+.admin-platform-notice,
+.admin-platform-readonly {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.admin-platform-error {
+  border: 1px solid #fca5a5;
+  background: #fef2f2;
+  color: var(--apf-danger);
+}
+
+.admin-platform-notice {
+  border: 1px solid #86efac;
+  background: #f0fdf4;
+  color: var(--apf-ok);
+}
+
+.admin-platform-readonly {
+  border: 1px solid var(--apf-hairline);
+  background: #f9fafb;
+  color: var(--apf-ink-soft);
+}
+
+/* ── Cartes ───────────────────────────────────────────────────────────────── */
+
+.admin-platform-card {
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border: 1px solid var(--apf-hairline);
+  border-radius: 10px;
+  background: var(--bg-color);
+}
+
+.admin-platform-hint {
+  margin: 14px 0 0;
+  max-width: 72ch;
+  color: var(--apf-ink-soft);
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+/* ── Interrupteur et modes ────────────────────────────────────────────────── */
+
+.admin-platform-switch,
+.admin-platform-modes label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--apf-hairline);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-platform-switch input,
+.admin-platform-modes input {
+  margin-top: 3px;
+  flex: none;
+}
+
+.admin-platform-switch span,
+.admin-platform-modes span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-platform-switch em,
+.admin-platform-modes em {
+  max-width: 68ch;
+  color: var(--apf-ink-soft);
+  font-size: 0.82rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.admin-platform-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* L'option retenue est marquée par une bordure ET un fond : la sélection ne
+   doit pas reposer sur le seul point du bouton radio. */
+.admin-platform-modes label.selected {
+  border-color: var(--apf-accent);
+  background: #f5f9ff;
+}
+
+.admin-platform-modes label:has(input:disabled),
+.admin-platform-switch:has(input:disabled) {
+  cursor: default;
+  opacity: 0.65;
+}
+
+/* ── Champ texte ──────────────────────────────────────────────────────────── */
+
+.admin-platform-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 0.88rem;
+}
+
+.admin-platform-field textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--apf-hairline);
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}
+
+.admin-platform-field em {
+  color: var(--apf-ink-soft);
+  font-size: 0.8rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+/* ── Actions ──────────────────────────────────────────────────────────────── */
+
+.admin-platform-actions {
+  margin-bottom: 28px;
+}
+
+.admin-platform-actions button {
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--apf-accent);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.admin-platform-actions button:disabled {
+  background: #9ca3af;
+  cursor: default;
+}
+
+/* ── Codes d'invitation ───────────────────────────────────────────────────── */
+
+.admin-platform-invite-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-platform-invite-form input {
+  padding: 7px 10px;
+  border: 1px solid var(--apf-hairline);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.admin-platform-invite-form button {
+  padding: 7px 16px;
+  border: 1px solid var(--apf-accent);
+  border-radius: 6px;
+  background: var(--bg-color);
+  color: var(--apf-accent);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-platform-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.admin-platform-table th,
+.admin-platform-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--apf-hairline);
+  text-align: left;
+}
+
+.admin-platform-table th {
+  color: var(--apf-ink-soft);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.admin-platform-table code {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+/* Un code inutilisable reste lisible : il est atténué, pas effacé — c'est
+   l'historique de distribution. */
+.admin-platform-table tr.inactive {
+  color: #9ca3af;
+}
+
+.admin-platform-table td em {
+  color: var(--apf-ink-soft);
+  font-size: 0.8rem;
+}
+
+.admin-platform-empty {
+  color: var(--apf-ink-soft);
+  font-style: italic;
+}
+
+.admin-platform-table button {
+  padding: 4px 10px;
+  border: 1px solid var(--apf-hairline);
+  border-radius: 6px;
+  background: var(--bg-color);
+  font-size: 0.78rem;
+  cursor: pointer;
+}

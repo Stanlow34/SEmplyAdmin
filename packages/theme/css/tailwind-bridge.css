@@ -1,0 +1,150 @@
+/*
+ * Passerelle Tailwind → charte SEmply.
+ *
+ * À N'IMPORTER QUE dans une application qui utilise les couleurs par défaut de
+ * Tailwind (`bg-white`, `text-gray-500`, `bg-red-50`…). Aujourd'hui, c'est le
+ * cas de SEmplyCompta et d'elle seule.
+ *
+ * ── Le problème ───────────────────────────────────────────────────────────
+ *
+ * Une classe comme `text-gray-500` écrit un gris FIGÉ. Elle ne suit ni la
+ * palette choisie par l'utilisateur, ni le mode sombre : sur fond sombre, les
+ * ~800 occurrences de SEmplyCompta rendaient des rectangles blancs et du texte
+ * gris clair sur gris clair. Les réécrire une à une n'était pas raisonnable,
+ * et aurait de toute façon recommencé au prochain composant écrit en Tailwind.
+ *
+ * ── Ce que fait ce fichier ────────────────────────────────────────────────
+ *
+ * Il redéfinit l'échelle de couleurs de Tailwind en termes de jetons de la
+ * charte. `@theme inline` est essentiel : sans `inline`, Tailwind fabrique
+ * l'utilitaire à partir de SA variable de thème ; avec, il pose directement
+ * l'expression écrite ici. `bg-white` devient donc littéralement
+ * `background-color: var(--bg-color)` — donc une couleur qui suit la palette.
+ *
+ * L'échelle de Tailwind est plus fine que la charte (dix gris contre quatre
+ * surfaces) : plusieurs échelons tombent sur le même jeton. C'est voulu — le
+ * nuancier de la charte est celui dont les contrastes ont été vérifiés.
+ *
+ * ── Ce qui n'est PAS repris ───────────────────────────────────────────────
+ *
+ * `black` reste noir. Les seuls usages sont des voiles de boîte modale
+ * (`bg-black/55`) : un voile doit rester sombre dans les deux thèmes, alors
+ * qu'un `--text-color` devient presque blanc en sombre — le voile aurait
+ * éclairci la page au lieu de l'assombrir.
+ *
+ * ── Réserve ───────────────────────────────────────────────────────────────
+ *
+ * La charte n'a pas de surface « information » : `--color-info-bg` retombe sur
+ * la surface neutre. Les pastilles bleues rendent donc un fond neutre avec du
+ * texte et une bordure bleus. C'est lisible, mais moins distinct qu'avant ; le
+ * correctif est d'ajouter une teinte info à chacune des sept palettes.
+ */
+
+@theme inline {
+  /* ── Neutres ─────────────────────────────────────────────── */
+  --color-white:      var(--bg-color);
+  --color-gray-50:    var(--bg-color-light);
+  --color-gray-100:   var(--bg-color-hover);
+  --color-gray-200:   var(--color-border);
+  --color-gray-300:   var(--color-border-light);
+  --color-gray-400:   var(--text-color-light);
+  --color-gray-500:   var(--text-color-light);
+  --color-gray-600:   var(--text-color-light);
+  --color-gray-700:   var(--text-color);
+  --color-gray-800:   var(--text-color);
+  --color-gray-900:   var(--text-color);
+
+  /* Mêmes correspondances pour les autres familles neutres de Tailwind, au
+     cas où un composant en emploierait une. */
+  --color-slate-50:   var(--bg-color-light);
+  --color-slate-100:  var(--bg-color-hover);
+  --color-slate-200:  var(--color-border);
+  --color-slate-300:  var(--color-border-light);
+  --color-slate-400:  var(--text-color-light);
+  --color-slate-500:  var(--text-color-light);
+  --color-slate-600:  var(--text-color-light);
+  --color-slate-700:  var(--text-color);
+  --color-slate-800:  var(--text-color);
+  --color-slate-900:  var(--text-color);
+
+  /* ── Danger ──────────────────────────────────────────────── */
+  --color-red-50:     var(--color-danger-light);
+  --color-red-100:    var(--color-danger-light);
+  --color-red-200:    var(--color-danger-transp);
+  --color-red-300:    var(--color-danger-transp);
+  --color-red-400:    var(--color-danger);
+  --color-red-500:    var(--color-danger);
+  --color-red-600:    var(--color-danger);
+  --color-red-700:    var(--color-danger-dark);
+  --color-red-800:    var(--color-danger-dark);
+  --color-red-900:    var(--color-danger-dark);
+
+  /* ── Succès ──────────────────────────────────────────────── */
+  --color-green-50:      var(--color-success-light);
+  --color-green-100:     var(--color-success-light);
+  --color-green-200:     var(--color-success-transp);
+  --color-green-300:     var(--color-success-transp);
+  --color-green-400:     var(--color-success);
+  --color-green-500:     var(--color-success);
+  --color-green-600:     var(--color-success);
+  --color-green-700:     var(--color-success-dark);
+  --color-green-800:     var(--color-success-dark);
+  --color-green-900:     var(--color-success-dark);
+  --color-emerald-50:    var(--color-success-light);
+  --color-emerald-100:   var(--color-success-light);
+  --color-emerald-500:   var(--color-success);
+  --color-emerald-600:   var(--color-success);
+  --color-emerald-700:   var(--color-success-dark);
+  --color-emerald-800:   var(--color-success-dark);
+
+  /* ── Avertissement ───────────────────────────────────────── */
+  /* Les échelons foncés tombent sur `--color-warning` et non sur
+     `--color-warning-dark` : dans les palettes claires, cette dernière
+     (#FBBF24) est plus CLAIRE que la couleur de base — un `text-amber-800`
+     serait devenu illisible sur son propre fond de pastille. */
+  --color-amber-50:     var(--color-warning-light);
+  --color-amber-100:    var(--color-warning-light);
+  --color-amber-200:    var(--color-warning-transp);
+  --color-amber-300:    var(--color-warning-transp);
+  --color-amber-500:    var(--color-warning);
+  --color-amber-600:    var(--color-warning);
+  --color-amber-700:    var(--color-warning);
+  --color-amber-800:    var(--color-warning);
+  --color-amber-900:    var(--color-warning);
+  --color-yellow-50:    var(--color-warning-light);
+  --color-yellow-100:   var(--color-warning-light);
+  --color-yellow-700:   var(--color-warning);
+  --color-yellow-800:   var(--color-warning);
+  --color-orange-50:    var(--color-warning-light);
+  --color-orange-100:   var(--color-warning-light);
+  --color-orange-200:   var(--color-warning-transp);
+  --color-orange-700:   var(--color-warning);
+  --color-orange-800:   var(--color-warning);
+  --color-orange-900:   var(--color-warning);
+
+  /* ── Information ─────────────────────────────────────────── */
+  --color-blue-50:      var(--color-info-bg);
+  --color-blue-100:     var(--color-info-bg);
+  --color-blue-200:     var(--color-info);
+  --color-blue-500:     var(--color-info);
+  --color-blue-600:     var(--color-info);
+  --color-blue-700:     var(--color-info);
+  --color-blue-800:     var(--color-info);
+  --color-blue-900:     var(--color-info);
+  --color-sky-50:       var(--color-info-bg);
+  --color-sky-500:      var(--color-info);
+  --color-sky-700:      var(--color-info);
+
+  /* ── Violet ──────────────────────────────────────────────── */
+  /* Aucune couleur violette dans la charte. Les rares pastilles violettes
+     (statut « déposée », journal « achat ») passent sur le secondaire, qui
+     leur garde une identité propre et un contraste vérifié. */
+  --color-purple-50:    var(--color-secondary-light);
+  --color-purple-100:   var(--color-secondary-light);
+  --color-purple-200:   var(--color-secondary-transp);
+  --color-purple-700:   var(--color-secondary-text);
+  --color-purple-800:   var(--color-secondary-text);
+  --color-purple-900:   var(--color-secondary-text);
+  --color-violet-50:    var(--color-secondary-light);
+  --color-violet-700:   var(--color-secondary-text);
+}

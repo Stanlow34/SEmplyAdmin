@@ -1,0 +1,453 @@
+/* Back-office › Journal d'activité.
+   ──────────────────────────────────────────────────────────────────────────
+   Couleurs déclarées en dur, comme sur l'annuaire de liens, et pour la même
+   raison : les variables de thème de l'application changent avec la palette
+   choisie par le compte, alors qu'ici la teinte PORTE UNE INFORMATION (la
+   catégorie d'action, le succès ou l'échec).
+
+   Le rouge de l'échec n'est jamais seul à signaler un refus : la ligne porte
+   aussi un liseré à gauche et le code d'erreur en toutes lettres. Un tableau
+   qu'on lit en diagonale à la recherche d'un incident ne peut pas reposer sur
+   la seule perception d'une couleur.
+
+   Densité assumée : ce tableau sert à retrouver UNE ligne parmi des milliers.
+   Interlignage serré, police tabulaire sur les colonnes techniques, aucune
+   illustration. */
+
+.admin-activity {
+  --aac-ink: var(--text-color);
+  --aac-ink-soft: var(--text-color-light);
+  --aac-ink-muted: #8b8b8b;
+  --aac-hairline: var(--color-border);
+  --aac-surface: #f9fafb;
+
+  --aac-data: #2a78d6;
+  --aac-read: #6b7280;
+  --aac-auth: #7c4dbe;
+  --aac-admin: #b45309;
+  --aac-support: #0f766e;
+  --aac-system: #57534e;
+  --aac-ko: #b42318;
+  --aac-ok: #15803d;
+
+  max-width: 1440px;
+  color: var(--aac-ink);
+}
+
+.aac-head h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.aac-head p {
+  margin: 0 0 20px;
+  max-width: 82ch;
+  color: var(--aac-ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ── Tuiles de volumétrie ────────────────────────────────────────────────── */
+
+.aac-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.aac-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 180px;
+  padding: 12px 16px;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 8px;
+  background: var(--bg-color);
+}
+
+.aac-tile.is-alert {
+  border-color: #f3c0bb;
+  background: #fef4f3;
+}
+
+.aac-tile-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.aac-tile.is-alert .aac-tile-value {
+  color: var(--aac-ko);
+}
+
+.aac-tile-label {
+  color: var(--aac-ink-soft);
+  font-size: 0.8rem;
+}
+
+/* ── Filtres ─────────────────────────────────────────────────────────────── */
+
+.aac-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.aac-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.aac-chip {
+  padding: 5px 12px;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 999px;
+  background: var(--bg-color);
+  color: var(--aac-ink-soft);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.aac-chip:hover {
+  border-color: #c7ccd4;
+}
+
+.aac-chip.is-active {
+  border-color: var(--aac-data);
+  background: #eaf2fd;
+  color: #16467f;
+  font-weight: 600;
+}
+
+.aac-search {
+  flex: 1 1 260px;
+  min-width: 200px;
+  padding: 6px 10px;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.aac-select {
+  padding: 6px 8px;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 6px;
+  background: var(--bg-color);
+  font-size: 0.82rem;
+}
+
+.aac-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--aac-data);
+  border-radius: 6px;
+  background: var(--aac-data);
+  color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.aac-btn-ghost {
+  border-color: var(--aac-hairline);
+  background: var(--bg-color);
+  color: var(--aac-ink-soft);
+}
+
+.aac-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ── Tableau ─────────────────────────────────────────────────────────────── */
+
+.aac-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 8px;
+  background: var(--bg-color);
+  transition: opacity 0.15s ease;
+}
+
+/* Rechargement : on estompe la vue précédente au lieu de la remplacer par un
+   squelette, qui ferait sauter la page à chaque changement de filtre. */
+.aac-table-wrap.is-loading {
+  opacity: 0.55;
+}
+
+.aac-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.aac-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--aac-hairline);
+  background: var(--aac-surface);
+  color: var(--aac-ink-soft);
+  font-size: 0.75rem;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aac-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f2f4;
+  vertical-align: top;
+}
+
+.aac-row {
+  cursor: pointer;
+}
+
+.aac-row:hover {
+  background: #f7fafd;
+}
+
+.aac-row.is-open {
+  background: #eef5fd;
+}
+
+/* Liseré : le refus reste visible sans dépendre de la seule teinte du texte. */
+.aac-row.is-failed td:first-child {
+  box-shadow: inset 3px 0 0 var(--aac-ko);
+}
+
+.aac-when {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--aac-ink-soft);
+}
+
+.aac-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: 260px;
+}
+
+.aac-tag {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.aac-tag-sa {
+  background: #fef0e2;
+  color: var(--aac-admin);
+}
+
+.aac-tag-support {
+  background: #e6f5f3;
+  color: var(--aac-support);
+}
+
+.aac-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #eef0f3;
+  color: var(--aac-ink);
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.aac-badge-data { background: #e8f1fc; color: #1a5aa8; }
+.aac-badge-read { background: #f0f1f3; color: #4b5563; }
+.aac-badge-auth { background: #f2ecfb; color: #5b3695; }
+.aac-badge-admin { background: #fdf0dd; color: #92400e; }
+.aac-badge-support { background: #e4f3f1; color: #0f766e; }
+.aac-badge-system { background: #eeece9; color: #44403c; }
+
+.aac-label {
+  color: var(--aac-ink-soft);
+}
+
+.aac-target code,
+.aac-origin code {
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #f3f4f6;
+  font-size: 0.75rem;
+}
+
+.aac-fields {
+  display: block;
+  margin-top: 3px;
+  color: var(--aac-ink-muted);
+  font-size: 0.72rem;
+}
+
+.aac-origin {
+  max-width: 320px;
+}
+
+.aac-route {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--aac-ink-muted);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aac-result {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.aac-ok {
+  color: var(--aac-ok);
+  font-weight: 600;
+}
+
+.aac-ko {
+  color: var(--aac-ko);
+  font-weight: 600;
+}
+
+.aac-muted {
+  color: var(--aac-ink-muted);
+  font-size: 0.75rem;
+}
+
+.aac-empty {
+  padding: 32px;
+  color: var(--aac-ink-muted);
+  text-align: center;
+}
+
+/* ── Détail déplié ───────────────────────────────────────────────────────── */
+
+.aac-detail-row td {
+  padding: 0;
+  background: #fbfcfd;
+}
+
+.aac-detail {
+  padding: 14px 16px;
+  border-left: 3px solid var(--aac-data);
+}
+
+.aac-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 0 0 12px;
+}
+
+.aac-meta dt {
+  color: var(--aac-ink-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aac-meta dd {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+}
+
+.aac-ua {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aac-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--aac-data);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.aac-diff {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.aac-diff h4,
+.aac-correlated h4 {
+  margin: 0 0 4px;
+  color: var(--aac-ink-soft);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aac-diff pre {
+  max-height: 320px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  border: 1px solid var(--aac-hairline);
+  border-radius: 6px;
+  background: var(--bg-color);
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.aac-correlated {
+  margin-top: 14px;
+}
+
+.aac-correlated ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aac-correlated li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #f1f2f4;
+  font-size: 0.78rem;
+}
+
+/* ── Pagination et notes ─────────────────────────────────────────────────── */
+
+.aac-pager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.aac-error {
+  margin: 10px 0;
+  padding: 8px 12px;
+  border: 1px solid #f3c0bb;
+  border-radius: 6px;
+  background: #fef4f3;
+  color: var(--aac-ko);
+  font-size: 0.84rem;
+}
+
+.aac-note {
+  margin-top: 18px;
+  max-width: 80ch;
+  color: var(--aac-ink-muted);
+  font-size: 0.78rem;
+}

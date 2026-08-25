@@ -1,0 +1,412 @@
+/*
+            Author : Steven
+            Date : 01/09/26
+*/
+/*
+ * Feuille propre au back-office : ossature (en-tête, navigation, écrans
+ * d'administration) et les quelques réglages qu'il est seul à porter.
+ *
+ * TOUT LE RESTE — jetons de couleur, typographie, boutons, champs, tableaux,
+ * listes déroulantes, focus clavier — vient de @semply/theme, partagé avec
+ * l'application cliente, AuthSEmply, SEmplyCompta et SEmplyPrevi. Le
+ * back-office portait jusqu'ici sa PROPRE copie des jetons, recopiée de
+ * l'application cliente et déjà en retard sur elle : ni les jetons
+ * `--color-on-*` récents, ni les sept palettes, ni le mode sombre.
+ *
+ * L'import CSS et non un import depuis main.jsx : les jetons doivent être là
+ * dès la première peinture, avant l'exécution du bundle.
+ *
+ * Les palettes commentées qui vivaient ici (dev, Palette 1 à 4) ont été
+ * retirées : ce sont exactement les palettes `rose`, `nuit`, `ocean` et
+ * `foret` du paquet, sélectionnables dans l'interface.
+ */
+@import '@semply/theme/css';
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* others */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+@media (max-width: 460px){
+  h1.site-name{
+    font-size: 1.8em;
+}
+}
+@media (max-width: 440px){
+  h1.site-name{
+    font-size: 1.5em;
+}
+}
+@media (max-width: 400px){
+  h1.site-name{
+    font-size: 1em;
+}
+}
+@media (max-width: 350px){
+  h1.site-name{
+    display: none;
+}
+    .site-name{
+        justify-content: center;
+    }
+    .connect{
+        justify-content: center;
+    }
+}
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* forms */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+fieldset.connect{
+    display: inline-block;
+    margin: 20px 0 px;
+    padding: 20px;
+    border: 10px solid var(--text-color);
+    background-color: var(--color-primary-transp);
+    width: 350px;
+    vertical-align: middle;
+    align-items: center;
+    border-style: groove;
+}
+
+.remove-btn {
+    background-color: transparent;
+    cursor: pointer;
+    padding: 6px;
+    margin: 0;
+    display: flex;
+}
+
+fieldset.invoice{
+    display: inline-block;
+    margin: 20px 5px 20px 5px;
+    padding: 20px;
+    border: 10px solid var(--text-color);
+    background-color: var(--color-secondary-transp);
+    width: fit-content;
+    align-items: center;
+    border-style: groove;
+}
+
+.customer-field {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    align-items: center;
+    align-content: center;
+}
+
+.item-field{
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.invoice-head{
+    display: inline-block;
+    width: fit-content ;
+    padding: 3px;
+    align-items: center;
+    align-content: center;
+}
+
+label.connect , input.connect , select.connect{
+    display: block;
+    font-size: 1rem;
+    font-family: var(--font-family-text);
+    cursor: pointer;
+}
+
+/* Largeur propre aux formulaires du back-office. Le fond, la bordure et
+   l'arrondi viennent de la charte (@semply/theme). */
+input {
+    width: 70%;
+}
+
+option:hover {
+    background: var(--color-primary-light);
+}
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/************************************************************************/
+/************************************************************************/
+/* Layout */
+/************************************************************************/
+/************************************************************************/
+
+/* header */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+header{
+    width: 100%;
+    padding: 5px 0px 10px 0px;
+    margin-left: 0%;
+    background-color: var(--bg-color);
+}
+
+.index-header{
+    margin-left: 0;
+    width: 100%;
+}
+/* Le conteneur #banner existe dans le HTML, et React y injecte un second .banner */
+
+.name{
+    display: block;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0px;
+}
+
+.site-name{
+    padding: 0px 0px 0px 30px;
+    display: flex;
+    flex: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    align-items: center;
+}
+#logo{
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: 75px;
+    padding: 5px 10px;
+}
+.lien-logo{
+    display: flex;
+    vertical-align: middle;
+}
+.lien-logo:hover{
+    opacity: 0.5;
+}
+.connect{
+    margin: 0;
+    background-color:none;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    right:2%;
+    width: 100%;
+}
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* nav */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* main */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+main{
+    padding-top: 10px;
+    margin-left: 5%;
+    width: 95%;
+}
+.index-main{
+    margin-left: 0;
+    width: 100%;
+}
+article{
+    margin: 10px;
+    text-align: center;
+}
+article h2 {
+    display: inline-block;
+    background-color: var(--bg-color);
+}
+article p {
+    text-align: justify;
+}
+
+.login-container , .register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    justify-self: center;
+    width: 50%;
+    border: 10px solid var(--text-color);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 10px 10px 100px 10px;
+}
+
+.login-input , .register-input {
+    width: 98%;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    margin: 20px 0px;
+    border: 2px solid var(--text-color-light);
+    background-color: var(--bg-color);
+    padding: 5px;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.login-form , .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    justify-self: center;
+    align-content: center;
+    width: 100%;
+}
+
+.login-button , .register-button {
+    background-color: var(--color-primary-light);
+    color: var(--text-color);
+    -webkit-box-decoration-break: slice;
+    box-decoration-break: slice;
+    margin: 1%;
+    border: none;
+    border-radius: 999px;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    font-size: 0.9375rem;
+    padding: 5px 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    align-self: center;
+}
+
+.login-button:hover , .register-button:hover {
+    background-color: var(--color-primary);
+    color:var(--text-color-light);
+}
+
+.login-register , .register-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    justify-self: center;
+    align-content: center;
+    width: 100%;
+    border-top: 1px solid var(--text-color);
+    padding: 20px 0px 10px 0px;
+}
+
+.nav-menu-burger {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 20px;
+    background-color: var(--color-primary-transp);
+    border-radius: 8px;
+    position: absolute;
+    top: 60px;
+    right: 5%;
+    z-index: 1000;
+}
+
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* aside */ 
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+/* footer */
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+footer{
+    display: flex;
+    bottom: 0;
+    width: 100%;
+}
+.index-footer{
+    margin-left: 0;
+    width: 100%;
+}
+.footer{
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+.footer-left , .footer-right{
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    padding: 0% 5%;   
+    left: 0;
+}
+
+.footer a:after{
+    display: flex;
+    content: '';
+    height: 1px;
+    width: 0;
+    background-color: var(--text-color);
+    transition: all 0.3s ease-in-out;
+}
+.footer a:hover:after{
+    width: 100%;
+}
+.up-btn{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--color-primary-light);
+    padding: 1px 5px;
+}
+.up-btn-action{
+    display: block;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+.up-logo{
+    width: 25px;
+    height: auto;
+}
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+.EnCours{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    gap: 20px;
+}
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
+
+.prod-btn {
+    background-color: var(--color-success);
+}
+
+.staging-btn {
+    background-color: var(--color-warning);
+} 
+.dev-btn {
+    background-color: var(--color-info);
+}

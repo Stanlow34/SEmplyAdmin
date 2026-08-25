@@ -1,0 +1,481 @@
+/*
+ * Conventions de composants de la suite SEmply.
+ *
+ * Reprises à l'identique de SEmplyApp (frontend/src/styles/styles.css), qui
+ * est la référence de la charte : boutons en pilule sur aplat accent, champs
+ * bordés de la couleur de texte, libellés en gras, tableaux zébrés au
+ * secondaire, listes déroulantes sur fond secondaire.
+ *
+ * Dépend de tokens.css et base.css, à importer avant.
+ *
+ * Ce qui n'est PAS ici : la mise en page. Chaque produit a sa propre ossature
+ * — bannière et sidebar rétractable pour SEmplyApp, sidebar fixe pour
+ * SEmplyCompta, barre horizontale pour SEmplyPrevi, carte centrée pour le
+ * portail. Ce fichier ne fixe que l'aspect des briques posées dedans.
+ */
+
+/* ── Boutons ────────────────────────────────────────────────────────────── */
+/*
+ * Le texte des boutons vient des jetons `--color-on-*` et jamais de
+ * `--text-color` : ce dernier est pensé pour le fond de PAGE. Posé sur un
+ * aplat de marque, son contraste tombait entre 1,46 et 4,19 selon la palette
+ * — sous le seuil WCAG AA de 4,5:1, et jusqu'à l'illisible en thème sombre.
+ */
+
+.btn {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    -webkit-box-decoration-break: slice;
+    box-decoration-break: slice;
+    margin: 1%;
+    border: none;
+    border-radius: var(--radius-pill);
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    font-size: 0.9375rem;
+    padding: 5px 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    vertical-align: middle;
+    justify-content: center;
+    width: auto;
+}
+.btn a {
+    text-decoration: none;
+    color: var(--color-on-accent);
+}
+.btn:hover {
+    background-color: var(--color-tertiary);
+    color: var(--color-on-tertiary);
+}
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: var(--color-secondary);
+    color: var(--color-on-secondary);
+    border-radius: var(--radius-pill);
+    border: none;
+    padding: 5px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-secondary:hover { background: var(--color-secondary-transp); }
+
+.btn-small {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    color: var(--bg-color);
+    border-radius: var(--radius-pill);
+    border: none;
+    padding: 5px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-danger:hover { background: var(--color-danger-transp); }
+
+/*
+ * Filet de sécurité : <button> écrit sans aucune classe.
+ *
+ * Il en reste plusieurs dizaines dans les applications (Annuler, Fermer,
+ * Supprimer, Ajouter une ligne…). Ils héritaient du rendu natif du navigateur
+ * — gris, carré, hors charte. Plutôt que d'ajouter une classe sur chacun (et
+ * de recommencer au prochain bouton écrit sans), on donne un aspect correct
+ * par défaut.
+ *
+ * Deux garde-fous :
+ *
+ * 1. `:not([class])` ne vise QUE les boutons sans attribut class : tout bouton
+ *    déjà stylé garde son apparence. Ceux qui portent un `style` en ligne
+ *    (croix de fermeture, onglets) restent prioritaires.
+ *
+ * 2. `:where()` ramène la spécificité à zéro. Indispensable : les projets
+ *    stylent déjà des boutons sans classe par sélecteur descendant
+ *    (`.cal-picker-header button`, `.adl-modal-actions button`…). Sans
+ *    `:where()`, ces règles et celle-ci auraient la MÊME spécificité (0,1,1) :
+ *    le gagnant dépendrait de l'ordre de chargement des feuilles, donc du
+ *    découpage en chunks de Vite. Avec `:where()`, n'importe quelle règle
+ *    existante l'emporte, de façon déterministe.
+ */
+button:where(:not([class])) {
+    background-color: var(--color-secondary);
+    color: var(--color-on-secondary);
+    /* Pas de bordure : sur ce fond elle serait invisible (contraste 1.01) et
+       ne ferait qu'ajouter du bruit. C'est le fond qui porte l'affordance,
+       comme pour .btn. */
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 5px 14px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+/* Tout dans :where() également, pour que ces variantes restent au même niveau
+   zéro et ne repassent pas devant les règles des composants. */
+button:where(:not([class]):hover:not(:disabled)) {
+    background-color: var(--color-tertiary);
+    color: var(--color-on-tertiary);
+}
+button:where(:not([class]):disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Bouton « Continuer avec Google ».
+   Fond blanc et bordure grise : ce sont les consignes de marque de Google, et
+   s'en écarter est un motif de refus lors de la validation de l'écran de
+   consentement OAuth. Le survol ne change donc pas les couleurs, seulement
+   l'ombre. */
+.google-button {
+    background-color: var(--bg-color);
+    color: var(--text-color-light);
+    border: 1px solid var(--color-border);
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 16px;
+}
+.google-button:hover {
+    background-color: var(--bg-color);
+    color: var(--text-color-light);
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.25);
+}
+.google-button-icon {
+    flex: none;
+}
+
+/* ── Formulaires ────────────────────────────────────────────────────────── */
+
+label {
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+label.required:after {
+    content: ' *';
+}
+
+/*
+ * Champs de saisie : surface primaire claire, bordure de la couleur du texte.
+ *
+ * `--color-primary-light` est une SURFACE, pas « le primaire en plus clair » :
+ * dans chaque palette c'est une teinte très pâle, choisie pour porter du texte
+ * (≥ 7:1) et pour ne pas se confondre avec le fond d'un bandeau d'erreur
+ * (ΔE ≥ 15). Ces deux propriétés sont vérifiées par palettes.test.js — elles
+ * ne l'étaient pas, et quatre palettes sur sept étaient en défaut.
+ */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    background-color: var(--color-primary-light);
+    border: 1px solid var(--text-color);
+    border-radius: var(--radius);
+    padding: 5px 5px;
+    color: var(--text-color);
+    /* Pas de `font-size` : les champs héritent de la taille du navigateur,
+       comme partout dans la suite aujourd'hui. En imposer une ici changerait
+       la taille de saisie de tous les écrans existants d'un coup. */
+    font-family: var(--font-family-text);
+}
+
+select { cursor: pointer; }
+input[type="checkbox"], input[type="radio"] { cursor: pointer; }
+.checkbox, .pointer { cursor: pointer; }
+
+.clearable-input { position: relative; }
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    line-height: 1;
+    padding: 0;
+    color: var(--text-color-light);
+    z-index: 2;
+}
+.clear-btn:hover {
+    color: var(--color-danger);
+    background-color: var(--color-danger-bg, transparent);
+}
+
+/* Séparateur « ou » entre la saisie classique et les fournisseurs externes. */
+.login-separator, .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 10px 0 6px;
+    color: var(--text-color-light);
+    font-size: 0.8125rem;
+}
+.login-separator::before, .login-separator::after,
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+/* ── Listes déroulantes ─────────────────────────────────────────────────── */
+
+.list {
+    padding: 5px 5px;
+    cursor: pointer;
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-border);
+    font-weight: 500;
+}
+
+/* Surlignage de l'option pointée (souris) ou active (flèches du clavier). */
+.list-dropdown .list.is-active,
+.list-dropdown .list.is-selected {
+    background: var(--color-primary);
+    color: var(--color-on-primary);   /* était hérité : illisible en sombre */
+}
+
+.select-input {
+    cursor: pointer;
+    border: 1px solid var(--text-color-light);
+    color: var(--text-color);
+}
+
+.list-dropdown {
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    background: var(--color-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    width: 100%;
+    max-height: 30vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* RÉSERVE, à trancher : l'ombre est portée par `--text-color`, qui devient
+       presque blanc en thème sombre — le panneau s'y retrouve cerné d'un halo
+       clair au lieu d'une ombre. `var(--shadow-raised)` corrigerait, mais
+       éclaircirait aussi nettement l'ombre des palettes claires. */
+    box-shadow: 0 4px 12px var(--text-color);
+}
+
+.list-dropdown > .list-options {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.list-search {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 4px;
+    background: var(--color-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.dropdown-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* Réserve la place de la croix pour que le texte ne passe pas dessous. */
+.clearable-input > div > input,
+.client-select,
+.select-input {
+    padding-right: 28px;
+}
+
+/* ── Tableaux ───────────────────────────────────────────────────────────── */
+
+.table_corps {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.table_first {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-color);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table_first th,
+.table_first td {
+  padding: 12px;
+  border: 1px solid var(--color-secondary-transp);
+}
+
+.table_first th {
+  background-color: var(--color-primary-light);
+  color: var(--text-color);
+}
+
+.table_first tr:nth-child(even) {
+  background-color: var(--color-secondary-transp);
+}
+
+.table_first tr:hover {
+  background-color: var(--color-tertiary-transp);
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────── */
+/*
+ * L'ossature du menu appartient à chaque produit ; c'est l'ASPECT du lien qui
+ * est commun : une pastille qui se remplit de la surface neutre au survol, et
+ * l'état actif signalé par cette même pastille plus la couleur de survol du
+ * texte. L'état actif ne repose donc pas sur la seule couleur — la forme
+ * change aussi, ce qui reste lisible en vision monochrome.
+ */
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.nav-link:hover {
+    background-color: var(--bg-color);
+    color: var(--text-color-hover);
+}
+.nav-link.active {
+    background-color: var(--bg-color);
+    color: var(--text-color-hover);
+}
+.nav-link.active:hover {
+    font-weight: bold;
+}
+
+/* ── Messages ───────────────────────────────────────────────────────────── */
+
+.alert {
+    padding: 0.7rem 0.85rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+.alert-error {
+    background: var(--color-danger-light);
+    color: var(--color-danger-dark);
+}
+.alert-success {
+    background: var(--color-success-light);
+    color: var(--color-success-dark);
+}
+.alert-warning {
+    background: var(--color-warning-light);
+    color: var(--color-warning-dark);
+}
+
+/* ── Cartes ─────────────────────────────────────────────────────────────── */
+
+.card {
+    background: var(--bg-color);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 24px;
+}
+
+/* ── Sélecteur d'apparence ──────────────────────────────────────────────── */
+/*
+ * Clair · Sombre · Navigateur. Discret par construction : c'est un raccourci
+ * de confort, il ne doit pas concurrencer les raccourcis métier qui
+ * l'entourent.
+ */
+
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--bg-color-light);
+}
+
+.theme-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 32 px : en deçà, trois cibles côte à côte deviennent impossibles à viser
+     au pouce. Le groupe reste sous les 110 px de large au total. */
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--text-color-light);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-switch-btn:hover {
+  color: var(--text-color);
+  background: var(--bg-color-hover);
+}
+
+/* L'option retenue doit se distinguer par autre chose que la seule couleur :
+   le fond plein change la FORME perçue du groupe, ce qui reste lisible en
+   vision monochrome comme sous les palettes daltoniennes. */
+.theme-switch-active,
+.theme-switch-active:hover {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.theme-switch-btn:focus-visible {
+  outline: 2px solid var(--color-primary-text);
+  outline-offset: 2px;
+}
+
+/* Libellé réservé aux lecteurs d'écran.
+   `clip-path` et une taille de 1 px plutôt que `display:none` : ce dernier
+   retire le texte de l'arbre d'accessibilité, ce qui le rendrait inaudible —
+   exactement l'inverse du but. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}

@@ -1,0 +1,317 @@
+/* Back-office › Modèles de plan comptable */
+
+.admin-acp {
+  max-width: 1240px;
+}
+
+.acp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.acp-head h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.acp-head p {
+  margin: 0;
+  max-width: 74ch;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.acp-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.acp-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(420px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .acp-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Liste ──────────────────────────────────────────────────────────────── */
+
+.acp-list ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.acp-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.acp-item:hover {
+  border-color: var(--color-primary, #2563eb);
+}
+
+.acp-item.active {
+  border-color: var(--color-primary, #2563eb);
+  box-shadow: inset 3px 0 0 var(--color-primary, #2563eb);
+}
+
+.acp-item-title {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.acp-item-title code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--bg-color-light, #f4f7f6);
+  font-size: 0.8rem;
+}
+
+.acp-item-meta {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+}
+
+.acp-badge {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.acp-empty {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ── Formulaire ─────────────────────────────────────────────────────────── */
+
+.acp-form {
+  padding: 18px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--color-surface, #fff);
+}
+
+/* Le fieldset neutralise toute la saisie d'un profil de consultation d'un seul
+   attribut, champs futurs compris. Il ne doit rien changer à la mise en page. */
+.acp-fieldset {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.acp-fieldset:disabled {
+  opacity: 0.7;
+}
+
+.acp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 640px) {
+  .acp-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.acp-form label {
+  display: block;
+}
+
+.acp-form label > span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.acp-form input[type='text'],
+.acp-form textarea {
+  width: 100%;
+  /* Le reset du projet (Meyer 2.0) ne pose pas `border-box` : sans cette ligne,
+     `width: 100%` + padding + bordure débordent de la carte. */
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-color, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.acp-form small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.acp-form code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--bg-color-light, #f4f7f6);
+  font-size: 0.95em;
+}
+
+.acp-check-inline {
+  align-self: end;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.acp-check-inline input {
+  margin-right: 6px;
+}
+
+.acp-check-inline small {
+  font-weight: 400;
+}
+
+/* Les comptes sont un bloc tabulaire : chasse fixe, pas de retour à la ligne
+   automatique — une ligne = un compte, y compris à l'œil. */
+.acp-accounts {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 0.8rem !important;
+  line-height: 1.55;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  resize: vertical;
+}
+
+.acp-parse {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-color-light, #f4f7f6);
+  font-size: 0.8rem;
+}
+
+.acp-parse-count {
+  font-weight: 600;
+}
+
+.acp-parse-errors {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--color-danger-dark);
+  line-height: 1.5;
+}
+
+/* Avertissement d'usage : ce n'est pas une erreur, c'est le contexte qui manque
+   avant de toucher à un référentiel partagé. */
+.acp-usage {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--color-warning);
+  border-radius: 8px;
+  color: #b45309;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.acp-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acp-spacer {
+  flex: 1;
+}
+
+.acp-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-color, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.acp-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.acp-btn.primary {
+  border-color: transparent;
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+}
+
+.acp-btn.danger {
+  border-color: var(--color-danger-dark);
+  color: var(--color-danger-dark);
+}
+
+.acp-error,
+.acp-notice,
+.acp-readonly {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.acp-error {
+  border: 1px solid var(--color-danger-dark);
+  color: var(--color-danger-dark);
+}
+
+.acp-notice {
+  border: 1px solid #15803d;
+  color: #15803d;
+}
+
+.acp-readonly {
+  border: 1px solid var(--color-warning);
+  color: #b45309;
+}
+
+.acp-warn {
+  max-width: 68ch;
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.925rem;
+  line-height: 1.55;
+}
