@@ -26,6 +26,9 @@ export interface PendingAuth {
 export interface TokenSet {
   accessToken: string;
   refreshToken: string;
+  /** Jeton d'IDENTITÉ. Certains produits ne l'échangent pas contre l'access
+   *  token du portail mais contre une session à eux — voir ProductTokenService. */
+  idToken: string;
   expiresAt: number;
 }
 
@@ -113,11 +116,13 @@ export class OidcService {
     const data = (await res.json()) as {
       access_token: string;
       refresh_token: string;
+      id_token?: string;
       expires_in: number;
     };
     return {
       accessToken: data.access_token,
       refreshToken: data.refresh_token,
+      idToken: data.id_token ?? '',
       // 30 s de marge : on renouvelle avant l'expiration plutôt qu'après un 401.
       expiresAt: Date.now() + (data.expires_in - 30) * 1000,
     };

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Req, Res, Query, UnauthorizedException } from '@
 import type { Request, Response } from 'express';
 import { OidcService } from './oidc.service';
 import { SessionStore } from '../session/session.store';
+import { ProductTokenService } from './product-token.service';
 import { SESSION_COOKIE, setSessionCookie, clearSessionCookie } from '../session/cookie';
 
 /**
@@ -13,6 +14,7 @@ export class AuthController {
   constructor(
     private readonly oidc: OidcService,
     private readonly sessions: SessionStore,
+    private readonly productTokens: ProductTokenService,
   ) {}
 
   @Get('login')
@@ -45,6 +47,8 @@ export class AuthController {
 
   @Post('logout')
   logout(@Req() req: Request, @Res() res: Response) {
+    const session = this.sessions.get(req.cookies?.[SESSION_COOKIE]);
+    if (session) this.productTokens.forget(session.sub);
     this.sessions.destroy(req.cookies?.[SESSION_COOKIE]);
     clearSessionCookie(res);
     res.status(204).send();

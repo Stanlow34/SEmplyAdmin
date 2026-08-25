@@ -6,6 +6,7 @@ import type { Request, Response } from 'express';
 import { ProductsService } from '../registry/products.service';
 import { SessionStore } from '../session/session.store';
 import { OidcService } from '../auth/oidc.service';
+import { ProductTokenService } from '../auth/product-token.service';
 import { SESSION_COOKIE } from '../session/cookie';
 
 /**
@@ -35,6 +36,7 @@ export class ProxyController {
     private readonly products: ProductsService,
     private readonly sessions: SessionStore,
     private readonly oidc: OidcService,
+    private readonly productTokens: ProductTokenService,
   ) {}
 
   @All(':product/*path')
@@ -52,19 +54,25 @@ export class ProxyController {
     }
 
     // Renouvellement avant expiration : évite un 401 et un aller-retour.
-    let accessToken = session.accessToken;
+    let current = session;
     if (Date.now() >= session.expiresAt) {
       try {
         const renewed = await this.oidc.refresh(session.refreshToken);
         this.sessions.update(id, renewed);
-        accessToken = renewed.accessToken;
+        current = { ...session, ...renewed };
       } catch {
         // Refresh refusé : la famille de jetons a probablement été révoquée.
         // On ferme la session plutôt que de laisser un état incohérent.
         this.sessions.destroy(id);
+        this.productTokens.forget(session.sub);
         throw new UnauthorizedException('Session expirée');
       }
     }
+
+    // Le jeton dépend du produit : le portail pour ceux qui valident son JWKS,
+    // un jeton émis par le produit lui-même pour ceux qui n'autorisent que sur
+    // leur propre base (SEmplyApp). Voir ProductTokenService.
+    const accessToken = await this.productTokens.tokenFor(product, current);
 
     const url = new URL(`${product.apiBaseUrl}/${path}`);
     for (const [key, value] of Object.entries(req.query)) {

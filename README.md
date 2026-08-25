@@ -78,6 +78,29 @@ Squelette fonctionnel côté relais, **zéro écran** côté interface. Les écr
 sont repris progressivement depuis `SEmplyApp/admin/`, qui reste en service sur
 `adminv2.semply.fr` jusqu'à la bascule.
 
+## Deux régimes d'authentification
+
+SEmplyCompta et SEmplyPrevi valident les jetons du portail contre son JWKS
+(`@semply/auth`) : le relais leur présente directement l'access token.
+
+SEmplyApp ne fait **délibérément pas** confiance aux jetons du portail pour
+l'autorisation — son `oidc-exchange.service.ts` le dit : *« Seules les claims
+d'IDENTITÉ en sortent ; entitlements, quotas et rôles restent calculés par
+SEmplyApp »*. Le relais fait donc pour lui le même échange que le navigateur :
+POST de l'`id_token` sur `/api/auth/oidc/login`, puis usage du jeton qu'il
+émet. **Aucune modification du modèle d'authentification de SEmplyApp n'est
+nécessaire** — sa `JwtStrategy` accepte déjà `Authorization: Bearer`, et le
+jeton présenté est un jeton qu'il a signé lui-même.
+
+Deux prérequis de configuration côté SEmplyApp, sans code :
+
+- l'`audience` acceptée par `oidc-exchange.service.ts` doit inclure
+  `semply-admin` en plus de `semply-app` ;
+- `ADMIN_ORIGIN` doit désigner un hôte d'API dédié (`adminapi.semply.fr`)
+  routé par nginx vers le même NestJS, car `adminOnly()` compare le *host de la
+  requête* — un appel du relais arrive sur l'hôte d'API, pas sur
+  admin.semply.fr.
+
 **Reste à faire côté AuthSEmply** : la matrice rôle → menus vit encore dans la
 base de SEmplyApp. Tant qu'elle y est, `apps/web/src/lib/access.js` interroge
 SEmplyApp — et SEmplyApp reste un point de défaillance unique pour

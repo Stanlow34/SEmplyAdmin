@@ -6,6 +6,7 @@ export interface AdminSession {
   email: string;
   accessToken: string;
   refreshToken: string;
+  idToken: string;
   /** Expiration de l'access token, en millisecondes epoch. */
   expiresAt: number;
   createdAt: number;
