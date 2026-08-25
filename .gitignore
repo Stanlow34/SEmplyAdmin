@@ -5,3 +5,6 @@ dist
 .env
 .env.*
 !.env.example
+
+# Résidus du pont (verrous git non supprimables à distance) — à supprimer à la main
+/_to_delete/
