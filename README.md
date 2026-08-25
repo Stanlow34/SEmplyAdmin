@@ -2,52 +2,83 @@
 
 Back-office **unique** de la suite SEmply, servi sur `admin.semply.fr`.
 
-## Ce que ce dépôt est
+## Forme
 
-Un client d'agrégation. Il ne contient que du React : il appelle en HTTP les API
-d'administration de chaque produit, avec la session SSO portée par le cookie posé
-sur `.semply.fr`.
+Une interface statique et un relais, sur la **même origine**.
 
 ```
-admin.semply.fr  →  nginx  →  dist/ statique       (aucun processus, aucun PM2)
-      │
-      └── XHR (credentials: include)
-            ├── api.semply.fr/api/admin/*     SEmplyApp
-            ├── api-auth.semply.fr/admin/*    AuthSEmply
-            ├── api-compta.semply.fr/…        SEmplyCompta
-            └── api-previ.semply.fr/…         SEmplyPrevi
+admin.semply.fr  →  nginx
+      ├── /            dist/ statique                (aucun processus)
+      └── /api/        BFF, 127.0.0.1:3010           (PM2 : SEmplyAdminBFF)
+                          │  Authorization: Bearer
+                          ├── api.semply.fr/api/admin/*      SEmplyApp
+                          ├── api-auth.semply.fr/admin/*     AuthSEmply
+                          ├── api-compta.semply.fr/admin/*   SEmplyCompta
+                          └── api-previ.semply.fr/admin/*    SEmplyPrevi
 ```
 
-## Les trois règles qui tiennent l'architecture
+**Pourquoi un relais plutôt qu'une SPA seule.** Un jeton bearer tenu par le
+JavaScript est exfiltrable : une XSS le vole et l'attaquant s'en sert depuis sa
+machine. Ici le navigateur ne reçoit qu'un identifiant de session opaque, dans
+un cookie httpOnly *host-only* — les jetons OIDC ne quittent jamais le
+processus. C'est la propriété que `admin-origin.ts` cherchait à obtenir côté
+SEmplyApp, obtenue cette fois sans empêcher de franchir les produits.
 
-**1. Zéro accès base.** Aucun Prisma, aucun `DATABASE_URL`, aucun processus
-serveur. Chaque écriture passe par le service métier du produit propriétaire —
-donc par son AuditInterceptor, son chiffrement, ses règles. Copier un contrôleur
-ici créerait deux vérités sur les mêmes tables.
+Prix payé, assumé : un processus Node (~150 Mo) et une cible de valeur à
+protéger.
+
+## Les quatre règles
+
+**1. Zéro accès base.** Ni ici ni dans le relais : aucun Prisma, aucun
+`DATABASE_URL`. Chaque écriture passe par le service métier du produit
+propriétaire — donc par son AuditInterceptor, son chiffrement, ses règles.
 
 **2. Les contrôleurs `admin/` restent chez le produit.** Seuls les écrans
-migrent. Ce dépôt n'héberge jamais de logique métier.
+migrent. Ce dépôt n'héberge jamais de logique métier, et le relais ne
+transforme rien.
 
-**3. Un endpoint qui doit survivre à l'arrêt d'un produit n'appartient pas à ce
-produit.** C'est le test à appliquer avant d'ajouter une route côté serveur.
-Identité, rôles, MFA → AuthSEmply. Support et facturation → transverse. Le reste
-meurt avec son produit, et c'est voulu.
+**3. Le relais ne relaie que ce qui est déclaré.** Le navigateur choisit une
+**clé** de produit, jamais une URL — sinon `/api/p/:product/*` serait une SSRF.
+Et seuls les chemins sous `admin/` passent.
+
+**4. Un endpoint qui doit survivre à l'arrêt d'un produit n'appartient pas à ce
+produit.** Identité, rôles, MFA → AuthSEmply. Support et facturation →
+transverse. Le reste meurt avec son produit, et c'est voulu.
+
+Ces règles sont vérifiées par `apps/web/src/isolation.test.js`, qui inspecte
+les deux paquets.
 
 ## Organisation
 
 ```
-apps/web/src/
-  shell/        coquille : navigation, session, garde par menu
-  lib/          registre des produits, fabrique de clients HTTP
-  transverse/   écrans qui survivent à l'arrêt d'un produit
-  products/     un module de routes par produit, chargé à la demande
-packages/admin-http/   client axios partagé (refresh 401, credentials)
+apps/web/    interface — ne connaît aucune URL d'API, ne détient aucun jeton
+  src/shell/       navigation, session, garde par menu
+  src/lib/         client vers /api, registre, droits
+  src/transverse/  écrans qui survivent à l'arrêt d'un produit
+  src/products/    un module de routes par produit, chargé à la demande
+apps/api/    relais — OIDC, sessions en mémoire, liste blanche, proxy
+packages/admin-http/   fabrique de client axios
 ```
 
-Un module produit est **détachable** : supprimer son dossier retire le produit du
-back-office, sans toucher au reste.
+Un module produit est **détachable** : supprimer son dossier et son entrée dans
+`products/index.js` retire le produit du back-office.
+
+## Mise en service
+
+1. Déclarer `semply-admin` comme client **confidentiel** dans le catalogue OIDC
+   d'AuthSEmply, `redirectUris = https://admin.semply.fr/api/auth/callback`.
+2. `cp apps/api/.env.example apps/api/.env`, renseigner `OIDC_CLIENT_SECRET` et
+   `PRODUCTS`.
+3. `npm ci && npm run build`, puis `pm2 start ecosystem.config.js`.
+4. nginx : voir `nginx.admin.semply.fr.conf.example`.
 
 ## État
 
-Squelette. Les écrans sont repris progressivement depuis `SEmplyApp/admin/`,
-qui reste en service sur `adminv2.semply.fr` jusqu'à la bascule.
+Squelette fonctionnel côté relais, **zéro écran** côté interface. Les écrans
+sont repris progressivement depuis `SEmplyApp/admin/`, qui reste en service sur
+`adminv2.semply.fr` jusqu'à la bascule.
+
+**Reste à faire côté AuthSEmply** : la matrice rôle → menus vit encore dans la
+base de SEmplyApp. Tant qu'elle y est, `apps/web/src/lib/access.js` interroge
+SEmplyApp — et SEmplyApp reste un point de défaillance unique pour
+l'administration des quatre produits.

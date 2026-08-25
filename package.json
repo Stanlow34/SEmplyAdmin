@@ -2,17 +2,25 @@
   "name": "semplyadmin",
   "private": true,
   "version": "0.1.0",
-  "description": "Back-office unique de la suite SEmply (admin.semply.fr) — client d'agrégation, sans accès base.",
-  "engines": { "node": ">=20" },
-  "workspaces": ["apps/*", "packages/*"],
+  "description": "Back-office unique de la suite SEmply (admin.semply.fr) — interface statique + BFF, sans accès base.",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "dev:web": "npm run dev -w @semplyadmin/web"
+    "dev:web": "npm run dev -w @semplyadmin/web",
+    "dev:api": "npm run dev -w @semplyadmin/api"
   },
-  "devDependencies": { "turbo": "^2.10.11" },
+  "devDependencies": {
+    "turbo": "^2.10.11"
+  },
   "packageManager": "npm@11.11.0"
 }

@@ -1,51 +1,52 @@
-import { AUTH_PRODUCT } from './products.js';
+import api, { apiFor } from './clients.js';
 
 /**
- * Rôle d'administration de la session : ce qu'on peut atteindre une fois entré.
+ * Identité et droits de la session.
  *
- * ⚠️ ÉTAPE DE TRANSITION. Aujourd'hui `is_superadmin`, le rôle et la matrice
- * rôle → menus vivent dans la base de SEmplyApp (`admin-menus.ts`,
- * `SuperAdminGuard`). Le back-office interroge donc SEmplyApp pour savoir qui
- * il a en face — ce qui fait de SEmplyApp un point de défaillance unique pour
- * l'administration des QUATRE produits.
+ * L'identité vient du relais (`/api/auth/me`), qui la tient d'un appel VIVANT
+ * au portail — donc une révocation prend effet immédiatement.
  *
- * Cible : déplacer identité, rôles et MFA dans AuthSEmply, puis basculer
- * `ACCESS_SOURCE` sur le portail. Le reste de ce fichier ne bougera pas.
+ * ⚠️ TRANSITOIRE : le rôle et la matrice rôle → menus vivent encore dans la
+ * base de SEmplyApp (`admin-menus.ts`). Tant que c'est le cas, SEmplyApp est
+ * un point de défaillance unique pour l'administration des quatre produits.
+ * Cible : les déplacer dans AuthSEmply, puis remplacer `apiFor('semplyapp')`
+ * par `api.get('/auth/access')` ici — rien d'autre ne bougera.
  */
-const ACCESS_SOURCE = import.meta.env.VITE_ACCESS_API_URL ?? import.meta.env.VITE_API_SEMPLYAPP_URL;
 
 const REFUSED = { isSuperAdmin: false, role: null, menus: [], manageAdmins: false, mfaRequired: false };
 
 let cached = null;
 
 export function loadAccess() {
-  cached ??= fetch(`${ACCESS_SOURCE}/api/admin/access`, { credentials: 'include' })
-    .then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-        return {
-          isSuperAdmin: Boolean(data?.is_superadmin),
-          role: data?.role ?? null,
-          menus: Array.isArray(data?.menus) ? data.menus : [],
-          manageAdmins: Boolean(data?.manage_admins),
-          mfaRequired: false,
-        };
-      }
-      // 403 MFA_REQUIRED n'est PAS un refus : le compte est habilité, il lui
-      // manque l'appairage TOTP. Les confondre afficherait « accès refusé » à
-      // quelqu'un qui n'a qu'un écran de sécurité à visiter.
-      if (res.status === 403) {
-        const body = await res.json().catch(() => null);
-        if (body?.error === 'MFA_REQUIRED') return { ...REFUSED, mfaRequired: true };
+  cached ??= (async () => {
+    try {
+      await api.get('/auth/me');
+    } catch {
+      return REFUSED;
+    }
+
+    try {
+      const { data } = await apiFor('semplyapp').get('admin/access');
+      return {
+        isSuperAdmin: Boolean(data?.is_superadmin),
+        role: data?.role ?? null,
+        menus: Array.isArray(data?.menus) ? data.menus : [],
+        manageAdmins: Boolean(data?.manage_admins),
+        mfaRequired: false,
+      };
+    } catch (error) {
+      // 403 MFA_REQUIRED n'est pas un refus : le compte est habilité, il lui
+      // manque l'appairage TOTP. Le confondre avec « accès refusé » enverrait
+      // quelqu'un chercher un droit qu'il a déjà.
+      if (error.response?.status === 403 && error.response?.data?.error === 'MFA_REQUIRED') {
+        return { ...REFUSED, mfaRequired: true };
       }
       return REFUSED;
-    })
-    .catch(() => REFUSED);
+    }
+  })();
   return cached;
 }
 
 export function resetAccess() {
   cached = null;
 }
-
-export { AUTH_PRODUCT };
