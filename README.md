@@ -1,5 +1,31 @@
 # SEmplyAdmin
 
+> [!IMPORTANT]
+> **Dépôt parké depuis le 27 août 2026. Ce n'est pas la version courante des
+> écrans d'administration.**
+>
+> Le back-office unique a été abandonné au profit d'**un back-office par
+> produit** : garder les sites vraiment indépendants, pour qu'un produit qu'on
+> arrête puisse mourir seul sans emporter l'administration des autres. La seule
+> couture prévue entre eux est un contrat de tickets
+> (`docs/contrat-tickets.md`, présent dans chaque produit), en vue d'un
+> éventuel site support unique.
+>
+> **Où sont les écrans, alors.** Les 16 écrans de `apps/web/src/` sont des
+> COPIES de ceux de SEmplyApp — la seule différence tenait aux chemins
+> d'import. Les originaux n'ont jamais bougé : ils sont dans
+> `SEmplyApp/admin/src/pages/`, servis par `adminv2`, et c'est là qu'il faut
+> les modifier. Toute correction faite ici serait perdue.
+>
+> **Ce qui reste utile ici**, le jour où le site support centralisé existera :
+> le patron BFF (session serveur, jetons OIDC jamais exposés au navigateur),
+> la liste blanche du proxy, les tests d'isolation, le `deploy.sh` rsync en
+> même origine. Le client OIDC `semply-admin` a en revanche été **retiré** du
+> catalogue d'AuthSEmply : ses URI de redirection pointaient vers un hôte qui
+> n'existera pas.
+>
+> Rien ici n'est déployé ni lancé. Ne pas y revenir sans avoir relu ce bloc.
+
 Back-office **unique** de la suite SEmply, servi sur `admin.semply.fr`.
 
 ## Forme
