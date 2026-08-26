@@ -8,7 +8,7 @@
 > produit** : garder les sites vraiment indépendants, pour qu'un produit qu'on
 > arrête puisse mourir seul sans emporter l'administration des autres. La seule
 > couture prévue entre eux est un contrat de tickets
-> (`docs/contrat-tickets.md`, présent dans chaque produit), en vue d'un
+> (`CONTRAT-TICKETS.md`, présent dans chaque produit), en vue d'un
 > éventuel site support unique.
 >
 > **Où sont les écrans, alors.** Les 16 écrans de `apps/web/src/` sont des
